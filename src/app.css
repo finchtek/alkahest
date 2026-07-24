@@ -1,0 +1,81 @@
+@import 'tailwindcss';
+
+@theme {
+	/* the lab: every "zinc" surface remapped to soot, smoke & parchment */
+	--color-zinc-50: #f5efe2;
+	--color-zinc-100: #ece2cf;
+	--color-zinc-200: #ddcfb6;
+	--color-zinc-300: #c4b299;
+	--color-zinc-400: #9b8a74;
+	--color-zinc-500: #7a6b58;
+	--color-zinc-600: #5c5044;
+	--color-zinc-700: #443b32;
+	--color-zinc-800: #2b241d;
+	--color-zinc-900: #1b1611;
+	--color-zinc-950: #0f0c09;
+
+	/* copper & ember */
+	--color-accent-50: #fdf3e7;
+	--color-accent-300: #e5a86c;
+	--color-accent-400: #d98d4f;
+	--color-accent-500: #c26d33;
+	--color-accent-600: #9d5426;
+	--font-sans:
+		ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+		'Noto Sans', sans-serif;
+	--font-mono:
+		ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+html {
+	color-scheme: dark;
+	scroll-behavior: smooth;
+}
+
+/* cauldron-light vignette rising from the workbench */
+body {
+	background-image:
+		radial-gradient(1100px 500px at 50% -120px, rgb(194 109 51 / 0.07), transparent),
+		radial-gradient(900px 700px at 50% 110%, rgb(95 111 82 / 0.05), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+::selection {
+	background: rgb(245 169 184 / 0.3);
+}
+
+/* old-ledger headings for the guild */
+h1,
+h2,
+h3 {
+	font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+}
+
+.card {
+	@apply rounded-2xl border border-white/10 bg-zinc-900/60 transition;
+}
+
+/* ember hairline: copper coals through candlelight into moss */
+.spectrum-gradient {
+	background: linear-gradient(90deg, #c26d33, #e0b980, #7d8f69);
+}
+
+/* copper button… that blushes when you hover it. the potion knows. */
+.btn-primary {
+	@apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#c9803f] to-[#a75f28] px-5 py-2.5 font-bold text-[#140d07] shadow-[0_4px_20px_-4px_rgba(194,109,51,0.45)] transition duration-300 hover:from-[#b9c9d6] hover:to-[#dab3bd] hover:shadow-[0_4px_20px_-4px_rgba(218,179,189,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400 disabled:cursor-not-allowed disabled:opacity-40;
+}
+
+.btn-secondary {
+	@apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 font-medium text-zinc-200 transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400;
+}
