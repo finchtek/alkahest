@@ -1,0 +1,16 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "alkahest",
+	"compatibility_date": "2026-07-24",
+	// Pure static site: adapter-static prerenders every route, there is no
+	// server-side code or Worker script. Having this file already present is
+	// what stops Cloudflare's Git-integration flow from auto-running its
+	// SvelteKit "sv add" adapter migration (which tries to convert the app to
+	// @sveltejs/adapter-cloudflare and broke the build with a missing
+	// worker-configuration.d.ts). Omitting "main" tells Workers this is an
+	// assets-only deployment: it just serves the build/ folder, same as
+	// classic Cloudflare Pages did.
+	"assets": {
+		"directory": "./build"
+	}
+}
