@@ -5,12 +5,12 @@
 
 <div class="w-full" role="status" aria-live="polite">
 	<div class="mb-2 flex items-center justify-between gap-4 text-sm">
-		<span class="truncate text-zinc-300">{label || 'transmuting…'}</span>
+		<span class="truncate text-zinc-700">{label || 'transmuting…'}</span>
 		{#if value >= 0}
-			<span class="font-mono text-xs text-zinc-400">{pct}%</span>
+			<span class="font-mono text-xs text-zinc-600">{pct}%</span>
 		{/if}
 	</div>
-	<div class="h-2 overflow-hidden rounded-full bg-white/10">
+	<div class="h-2 overflow-hidden rounded-full bg-zinc-300/50">
 		{#if value >= 0}
 			<div
 				class="spectrum-gradient h-full rounded-full transition-[width] duration-200"

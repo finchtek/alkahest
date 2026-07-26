@@ -43,8 +43,8 @@
 	aria-label="Drop files here or press Enter to browse"
 	class="group relative flex w-full cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed text-center transition
 		{dragging
-		? 'border-accent-400 bg-accent-500/10'
-		: 'border-white/15 bg-white/[0.03] hover:border-accent-500/60 hover:bg-white/[0.05]'}
+		? 'border-[#a34a32] bg-[#a34a32]/10'
+		: 'border-zinc-400/30 bg-white/30 hover:border-[#a34a32]/60 hover:bg-white/50'}
 		{compact ? 'gap-2 px-4 py-8' : 'gap-3 px-6 py-14 sm:py-20'}"
 	ondragover={(e) => {
 		e.preventDefault();
@@ -61,7 +61,7 @@
 	}}
 >
 	<div
-		class="rounded-xl border border-white/10 bg-zinc-900 p-3 text-accent-400 shadow-lg transition group-hover:scale-105 {dragging ? 'scale-110' : ''}"
+		class="rounded-xl border border-zinc-400/40 bg-white/60 p-3 text-[#a34a32] shadow-sm transition group-hover:scale-105 {dragging ? 'scale-110' : ''}"
 	>
 		<svg width={compact ? 22 : 30} height={compact ? 22 : 30} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 			<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
@@ -71,15 +71,15 @@
 		</svg>
 	</div>
 	<div>
-		<p class="font-semibold text-zinc-100 {compact ? 'text-sm' : 'text-lg'}">
+		<p class="font-semibold text-zinc-900 {compact ? 'text-sm' : 'text-lg'}">
 			{dragging ? 'drop it! (gently)' : 'drop files here'}
 		</p>
-		<p class="mt-1 text-xs text-zinc-400 sm:text-sm">
-			or <span class="text-accent-300 underline decoration-accent-500/40 underline-offset-2">browse</span> · paste straight from your clipboard
+		<p class="mt-1 text-xs text-zinc-700 sm:text-sm">
+			or <span class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2">browse</span> · paste straight from your clipboard
 		</p>
 	</div>
 	{#if hint}
-		<p class="text-xs text-zinc-500">{hint}</p>
+		<p class="text-xs text-zinc-600">{hint}</p>
 	{/if}
 	<input
 		bind:this={input}

@@ -164,10 +164,10 @@
 
 <section class="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
 	<nav class="text-sm" aria-label="Breadcrumb">
-		<a href="/#tools" class="text-zinc-500 transition hover:text-accent-300">← all tools</a>
+		<a href="/#tools" class="text-zinc-600 transition hover:text-[#a34a32]">← all tools</a>
 	</nav>
-	<h1 class="mt-3 text-3xl font-extrabold tracking-tight text-zinc-50 sm:text-4xl">edit PDF</h1>
-	<p class="mt-3 leading-relaxed text-zinc-400">
+	<h1 class="mt-3 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">edit PDF</h1>
+	<p class="mt-3 leading-relaxed text-zinc-700">
 		reorder pages, rotate the sideways ones, delete what you don't need and drop in a blank page
 		where you do. free, and it never leaves your device. this is the one for when windows makes
 		you hunt for a real PDF editor and every option wants a subscription.
@@ -182,17 +182,17 @@
 				onfiles={loadFile}
 			/>
 			{#if loading}
-				<p class="mt-3 text-center text-sm text-zinc-400">reading pages…</p>
+				<p class="mt-3 text-center text-sm text-zinc-700">reading pages…</p>
 			{/if}
 			{#if loadError}
-				<p class="mt-3 text-center text-sm text-red-300">{loadError}</p>
+				<p class="mt-3 text-center text-sm text-red-700">{loadError}</p>
 			{/if}
 		</div>
 	{:else}
 		<div class="card mt-6 flex flex-wrap items-center justify-between gap-3 p-4">
 			<div class="min-w-0">
-				<p class="truncate text-sm font-medium text-zinc-200">{srcFile.name}</p>
-				<p class="text-xs text-zinc-500">{pages.length} page{pages.length === 1 ? '' : 's'}</p>
+				<p class="truncate text-sm font-medium text-zinc-800">{srcFile.name}</p>
+				<p class="text-xs text-zinc-600">{pages.length} page{pages.length === 1 ? '' : 's'}</p>
 			</div>
 			<div class="flex flex-wrap gap-2">
 				<button class="btn-secondary !px-3 !py-1.5 text-sm" onclick={addBlank}>+ blank page</button>
@@ -203,7 +203,7 @@
 		<div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
 			{#each pages as p, i (p.key)}
 				<div class="card flex flex-col gap-2 p-2.5">
-					<div class="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-lg bg-zinc-950/60">
+					<div class="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-lg bg-zinc-200/40">
 						{#if p.kind === 'existing' && p.thumb}
 							<img
 								src={p.thumb}
@@ -213,19 +213,19 @@
 							/>
 						{:else}
 							<div
-								class="flex h-[70%] w-[55%] items-center justify-center rounded border border-dashed border-white/20 bg-white/[0.02] text-[10px] text-zinc-500 transition-transform"
+								class="flex h-[70%] w-[55%] items-center justify-center rounded border border-dashed border-zinc-400/50 bg-zinc-100/60 text-[10px] text-zinc-600 transition-transform"
 								style="transform: rotate({p.rotation}deg)"
 							>
 								blank
 							</div>
 						{/if}
-						<span class="absolute left-1.5 top-1.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-zinc-200">
+						<span class="absolute left-1.5 top-1.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-zinc-800">
 							{i + 1}
 						</span>
 					</div>
 					<div class="flex items-center justify-between gap-1">
 						<button
-							class="rounded-lg p-1.5 text-zinc-500 transition hover:bg-white/10 hover:text-zinc-200 disabled:opacity-30"
+							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800 disabled:opacity-30"
 							onclick={() => move(i, -1)}
 							disabled={i === 0}
 							aria-label="move page {i + 1} earlier"
@@ -233,28 +233,28 @@
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
 						</button>
 						<button
-							class="rounded-lg p-1.5 text-zinc-500 transition hover:bg-white/10 hover:text-zinc-200"
+							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800"
 							onclick={() => rotate(i, -90)}
 							aria-label="rotate page {i + 1} left"
 						>
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3.5-7.1M3 4v5h5" /></svg>
 						</button>
 						<button
-							class="rounded-lg p-1.5 text-zinc-500 transition hover:bg-white/10 hover:text-zinc-200"
+							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800"
 							onclick={() => rotate(i, 90)}
 							aria-label="rotate page {i + 1} right"
 						>
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3.5-7.1M21 4v5h-5" /></svg>
 						</button>
 						<button
-							class="rounded-lg p-1.5 text-zinc-500 transition hover:bg-white/10 hover:text-red-300"
+							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-red-700"
 							onclick={() => remove(i)}
 							aria-label="delete page {i + 1}"
 						>
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
 						</button>
 						<button
-							class="rounded-lg p-1.5 text-zinc-500 transition hover:bg-white/10 hover:text-zinc-200 disabled:opacity-30"
+							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800 disabled:opacity-30"
 							onclick={() => move(i, 1)}
 							disabled={i === pages.length - 1}
 							aria-label="move page {i + 1} later"
@@ -267,7 +267,7 @@
 		</div>
 
 		{#if !pages.length}
-			<p class="mt-6 text-center text-sm text-zinc-500">
+			<p class="mt-6 text-center text-sm text-zinc-600">
 				every page is gone. add a blank one or start over with a fresh file.
 			</p>
 		{/if}
@@ -277,14 +277,14 @@
 				{exporting ? 'writing PDF…' : 'export edited PDF'}
 			</button>
 			{#if srcBytes}
-				<span class="text-xs text-zinc-500">original: {formatBytes(srcBytes.byteLength)}</span>
+				<span class="text-xs text-zinc-600">original: {formatBytes(srcBytes.byteLength)}</span>
 			{/if}
 		</div>
 		{#if exportError}
-			<p class="mt-3 text-sm text-red-300">{exportError}</p>
+			<p class="mt-3 text-sm text-red-700">{exportError}</p>
 		{/if}
 		{#if done}
-			<p class="mt-3 text-sm text-emerald-300">downloaded. close the tab and nothing is kept anywhere.</p>
+			<p class="mt-3 text-sm text-emerald-700">downloaded. close the tab and nothing is kept anywhere.</p>
 		{/if}
 	{/if}
 </section>

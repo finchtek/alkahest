@@ -55,6 +55,7 @@
 
 	function matchesAccept(f: File): boolean {
 		if (!tool) return false;
+		if (tool.accept.includes('*')) return true;
 		const ext = ('.' + (f.name.split('.').pop() ?? '')).toLowerCase();
 		return tool.accept.includes(ext);
 	}
@@ -143,15 +144,15 @@
 {#if tool}
 	<section class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
 		<nav class="text-sm" aria-label="Breadcrumb">
-			<a href="/#tools" class="text-zinc-500 transition hover:text-accent-300">← all tools</a>
+			<a href="/#tools" class="text-zinc-600 transition hover:text-[#a34a32]">← all tools</a>
 		</nav>
-		<h1 class="mt-3 text-3xl font-extrabold tracking-tight text-zinc-50 sm:text-4xl">
+		<h1 class="mt-3 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">
 			{tool.name}
 		</h1>
-		<p class="mt-3 leading-relaxed text-zinc-400">{tool.description}</p>
+		<p class="mt-3 leading-relaxed text-zinc-700">{tool.description}</p>
 
 		{#if tool.heavy}
-			<p class="mt-3 inline-flex items-start gap-2 rounded-xl border border-indigo-400/20 bg-indigo-400/5 px-3 py-2 text-xs leading-relaxed text-indigo-200/90">
+			<p class="mt-3 inline-flex items-start gap-2 rounded-xl border border-[#5f7a6b]/30 bg-[#5f7a6b]/[0.08] px-3 py-2 text-xs leading-relaxed text-[#3d4d45]">
 				<svg class="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
 					<circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" />
 				</svg>
@@ -165,11 +166,11 @@
 				accept={tool.acceptAttr}
 				multiple={tool.multiple}
 				compact={files.length > 0}
-				hint="Accepts {tool.accept.join(', ')}"
+				hint={tool.accept.includes('*') ? 'accepts any file type' : `Accepts ${tool.accept.join(', ')}`}
 				onfiles={addFiles}
 			/>
 			{#if rejectedNote}
-				<p class="mt-2 text-sm text-amber-300">{rejectedNote}</p>
+				<p class="mt-2 text-sm text-[#8c6239]">{rejectedNote}</p>
 			{/if}
 		</div>
 
@@ -178,11 +179,11 @@
 				{#each files as f, i (f.name + f.size)}
 					<li class="card flex items-center justify-between gap-3 px-4 py-2.5">
 						<div class="min-w-0">
-							<p class="truncate text-sm font-medium text-zinc-200">{f.name}</p>
-							<p class="text-xs text-zinc-500">{formatBytes(f.size)}</p>
+							<p class="truncate text-sm font-medium text-zinc-800">{f.name}</p>
+							<p class="text-xs text-zinc-600">{formatBytes(f.size)}</p>
 						</div>
 						<button
-							class="cursor-pointer rounded-lg p-1.5 text-zinc-500 transition hover:bg-white/10 hover:text-zinc-200"
+							class="cursor-pointer rounded-lg p-1.5 text-zinc-500 transition hover:bg-zinc-200/60 hover:text-zinc-900"
 							onclick={() => removeFile(i)}
 							aria-label="Remove {f.name}"
 							disabled={phase === 'working'}
@@ -199,10 +200,10 @@
 				<div class="card mt-4 flex flex-col gap-4 p-4">
 					{#each tool.options as opt (opt.key)}
 						<label class="flex flex-col gap-1.5 text-sm">
-							<span class="flex items-center justify-between font-medium text-zinc-300">
+							<span class="flex items-center justify-between font-medium text-zinc-800">
 								{opt.label}
 								{#if opt.type === 'range'}
-									<span class="font-mono text-xs text-accent-300">
+									<span class="font-mono text-xs text-[#a34a32]">
 										{opt.key === 'quality'
 											? `${Math.round(Number(opts[opt.key]) * 100)}%`
 											: opts[opt.key]}
@@ -216,14 +217,14 @@
 									max={opt.max}
 									step={opt.step}
 									bind:value={opts[opt.key]}
-									class="accent-cyan-400"
+									class="accent-[#a34a32]"
 									disabled={phase === 'working'}
 								/>
 							{:else if opt.type === 'select'}
 								<select
 									bind:value={opts[opt.key]}
 									disabled={phase === 'working'}
-									class="rounded-xl border border-white/15 bg-zinc-900 px-3 py-2 text-zinc-200 focus:border-accent-500 focus:outline-none"
+									class="rounded-xl border border-zinc-400/40 bg-white/80 px-3 py-2 text-zinc-800 focus:border-[#a34a32]/60 focus:outline-none"
 								>
 									{#each opt.choices ?? [] as c (c.value)}
 										<option value={c.value}>{c.label}</option>
@@ -235,10 +236,10 @@
 									placeholder={opt.placeholder}
 									bind:value={opts[opt.key]}
 									disabled={phase === 'working'}
-									class="rounded-xl border border-white/15 bg-zinc-900 px-3 py-2 text-zinc-200 placeholder:text-zinc-600 focus:border-accent-500 focus:outline-none"
+									class="rounded-xl border border-zinc-400/40 bg-white/80 px-3 py-2 text-zinc-800 placeholder:text-zinc-500 focus:border-[#a34a32]/60 focus:outline-none"
 								/>
 								{#if opt.hint}
-									<span class="text-xs text-zinc-500">{opt.hint}</span>
+									<span class="text-xs text-zinc-600">{opt.hint}</span>
 								{/if}
 							{/if}
 						</label>
@@ -254,7 +255,7 @@
 						transmute {files.length} {files.length === 1 ? 'file' : 'files'}
 					</button>
 					{#if files.length < minFiles}
-						<p class="mt-2 text-sm text-zinc-500">
+						<p class="mt-2 text-sm text-zinc-600">
 							add at least {minFiles} files to continue.
 						</p>
 					{/if}
@@ -263,9 +264,9 @@
 		{/if}
 
 		{#if phase === 'error'}
-			<div class="card mt-5 border-red-500/30 bg-red-500/5 p-4" role="alert">
-				<p class="font-semibold text-red-300">welp, the transmutation fizzled</p>
-				<p class="mt-1 text-sm break-words text-zinc-400">{errorMsg}</p>
+			<div class="card mt-5 border-red-500/30 bg-red-500/[0.06] p-4" role="alert">
+				<p class="font-semibold text-red-800">welp, the transmutation fizzled</p>
+				<p class="mt-1 text-sm break-words text-zinc-700">{errorMsg}</p>
 				<button class="btn-secondary mt-3" onclick={() => (phase = 'idle')}>try again</button>
 			</div>
 		{/if}
@@ -273,8 +274,8 @@
 		{#if phase === 'done' && results.length}
 			<div class="card mt-6 p-4">
 				<div class="flex items-center justify-between gap-3">
-					<h2 class="font-semibold text-zinc-100">
-						results <span class="text-sm font-normal text-zinc-500">({formatBytes(totalOut)})</span>
+					<h2 class="font-semibold text-zinc-900">
+						results <span class="text-sm font-normal text-zinc-600">({formatBytes(totalOut)})</span>
 					</h2>
 					{#if results.length > 1}
 						<button class="btn-secondary !px-3 !py-1.5 text-sm" onclick={downloadAll}>
@@ -284,10 +285,10 @@
 				</div>
 				<ul class="mt-3 flex flex-col gap-2">
 					{#each results as r (r.name)}
-						<li class="flex items-center justify-between gap-3 rounded-xl bg-white/[0.03] px-3 py-2">
+						<li class="flex items-center justify-between gap-3 rounded-xl bg-zinc-100/60 px-3 py-2">
 							<div class="min-w-0">
-								<p class="truncate text-sm text-zinc-200">{r.name}</p>
-								<p class="text-xs text-zinc-500">{formatBytes(r.blob.size)}</p>
+								<p class="truncate text-sm text-zinc-800">{r.name}</p>
+								<p class="text-xs text-zinc-600">{formatBytes(r.blob.size)}</p>
 							</div>
 							<button class="btn-primary !px-3 !py-1.5 text-sm" onclick={() => download(r)}>
 								download
@@ -300,7 +301,7 @@
 
 		{#if related.length}
 			<div class="mt-12">
-				<h2 class="text-sm font-semibold text-zinc-500">more like this</h2>
+				<h2 class="text-sm font-semibold text-zinc-600">more like this</h2>
 				<div class="mt-3 grid gap-3 sm:grid-cols-3">
 					{#each related as r (r.slug)}
 						<ToolCard tool={r} />
@@ -323,8 +324,8 @@
 	/>
 {:else}
 	<section class="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-		<h1 class="text-2xl font-bold text-zinc-100">recipe not found</h1>
-		<p class="mt-2 text-zinc-400">that transmutation isn’t in the guild book (yet, so feel free to ask for it).</p>
+		<h1 class="text-2xl font-bold text-zinc-900">recipe not found</h1>
+		<p class="mt-2 text-zinc-700">that transmutation isn't in the guild book (yet, so feel free to ask for it).</p>
 		<a href="/#tools" class="btn-primary mt-6">browse the guild book</a>
 	</section>
 {/if}

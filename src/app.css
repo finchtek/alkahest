@@ -1,42 +1,51 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,600;0,700;1,400&family=UnifrakturCook:wght@700&display=swap');
 
 @theme {
-	/* the lab: every "zinc" surface remapped to soot, smoke & parchment */
-	--color-zinc-50: #f5efe2;
-	--color-zinc-100: #ece2cf;
-	--color-zinc-200: #ddcfb6;
-	--color-zinc-300: #c4b299;
+	/* FinchTek palette: earth tones, light warm ground */
+	--color-zinc-50: #f4ede1;
+	--color-zinc-100: #e8dcc8;
+	--color-zinc-200: #dcc9af;
+	--color-zinc-300: #c9b896;
 	--color-zinc-400: #9b8a74;
-	--color-zinc-500: #7a6b58;
+	--color-zinc-500: #6b5847;
 	--color-zinc-600: #5c5044;
 	--color-zinc-700: #443b32;
-	--color-zinc-800: #2b241d;
-	--color-zinc-900: #1b1611;
-	--color-zinc-950: #0f0c09;
+	--color-zinc-800: #3d2f24;
+	--color-zinc-900: #2b241d;
+	--color-zinc-950: #1b1611;
 
-	/* copper & ember */
+	/* terracotta primary */
 	--color-accent-50: #fdf3e7;
-	--color-accent-300: #e5a86c;
-	--color-accent-400: #d98d4f;
-	--color-accent-500: #c26d33;
-	--color-accent-600: #9d5426;
-	--font-sans:
-		ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-		'Noto Sans', sans-serif;
+	--color-accent-300: #c98a3e;
+	--color-accent-400: #a34a32;
+	--color-accent-500: #a34a32;
+	--color-accent-600: #8c3d28;
+
+	/* secondary palette */
+	--color-green-500: #7a8450;
+	--color-amber-500: #c98a3e;
+	--color-brown-500: #8c6239;
+	--color-teal-500: #5f7a6b;
+
+	--font-sans: 'Vollkorn', Georgia, 'Times New Roman', serif;
+	--font-display: 'UnifrakturCook', 'Vollkorn', serif;
 	--font-mono:
 		ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 }
 
 html {
-	color-scheme: dark;
+	color-scheme: light;
 	scroll-behavior: smooth;
 }
 
-/* cauldron-light vignette rising from the workbench */
+/* light warm ground */
 body {
+	background-color: #f4ede1;
 	background-image:
-		radial-gradient(1100px 500px at 50% -120px, rgb(194 109 51 / 0.07), transparent),
-		radial-gradient(900px 700px at 50% 110%, rgb(95 111 82 / 0.05), transparent);
+		radial-gradient(700px 340px at 15% 0%, rgb(154 79 63 / 0.04), transparent),
+		radial-gradient(700px 340px at 50% 0%, rgb(194 109 51 / 0.05), transparent),
+		radial-gradient(700px 340px at 85% 10%, rgb(95 111 82 / 0.04), transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -55,27 +64,72 @@ body {
 	background: rgb(245 169 184 / 0.3);
 }
 
-/* old-ledger headings for the guild */
+/* FinchTek headings — display face for moments, body serif for hierarchy */
 h1,
 h2,
-h3 {
-	font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-display);
+	font-weight: 400;
+	line-height: 1.15;
+	color: #3d2f24;
+}
+
+/* body text stays in serif */
+p, li, label, button, .body-text {
+	font-family: var(--font-sans);
 }
 
 .card {
-	@apply rounded-2xl border border-white/10 bg-zinc-900/60 transition;
+	@apply rounded-xl border border-zinc-300/50 bg-white/70 transition hover:border-zinc-400/70 hover:shadow-sm;
 }
 
-/* ember hairline: copper coals through candlelight into moss */
+/* spectrum hairline: terracotta → amber → moss */
 .spectrum-gradient {
-	background: linear-gradient(90deg, #c26d33, #e0b980, #7d8f69);
+	background: linear-gradient(90deg, #c26d33, #c98a3e, #7a8450);
 }
 
-/* copper button… that blushes when you hover it. the potion knows. */
+/* guild stripe: the FinchTek five-color diagonal weave, used as a fun
+   decorative flourish (never as content filler here — this app is finished,
+   not a placeholder) */
+.guild-stripe {
+	background-image: repeating-linear-gradient(
+		135deg,
+		#a34a32 0 10px,
+		#c98a3e 10px 20px,
+		#7a8450 20px 30px,
+		#8c6239 30px 40px,
+		#5f7a6b 40px 50px
+	);
+}
+
+/* solid-color pill badges, matching the main FinchTek site's badge system */
+.badge {
+	@apply inline-flex items-center rounded-full px-2.5 py-0.5 text-[0.65rem] font-bold tracking-wide text-white uppercase;
+}
+.badge-terracotta {
+	background: #a34a32;
+}
+.badge-amber {
+	background: #c98a3e;
+}
+.badge-moss {
+	background: #7a8450;
+}
+.badge-clay {
+	background: #8c6239;
+}
+.badge-teal {
+	background: #5f7a6b;
+}
+
+/* terracotta primary button */
 .btn-primary {
-	@apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#c9803f] to-[#a75f28] px-5 py-2.5 font-bold text-[#140d07] shadow-[0_4px_20px_-4px_rgba(194,109,51,0.45)] transition duration-300 hover:from-[#b9c9d6] hover:to-[#dab3bd] hover:shadow-[0_4px_20px_-4px_rgba(218,179,189,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400 disabled:cursor-not-allowed disabled:opacity-40;
+	@apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#a34a32] to-[#8c3d28] px-6 py-2.5 font-bold text-white shadow-[0_2px_8px_-2px_rgba(163,74,50,0.35)] transition duration-200 hover:from-[#8c3d28] hover:to-[#6b3220] hover:shadow-[0_4px_12px_-2px_rgba(163,74,50,0.45)] active:translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a34a32] disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 .btn-secondary {
-	@apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-2.5 font-medium text-zinc-200 transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400;
+	@apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-zinc-400/50 bg-white/50 px-6 py-2.5 font-semibold text-zinc-800 transition hover:bg-white hover:border-zinc-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a34a32];
 }

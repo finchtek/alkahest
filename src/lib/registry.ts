@@ -599,6 +599,61 @@ export const tools: ToolDef[] = [
 		multiple: true,
 		options: [],
 		run: async (f, o, p) => (await import('./convert/docs')).xlsxToCsv(f, o, p)
+	},
+
+	// ---------- zip, markdown & data ----------
+	{
+		slug: 'files-to-zip',
+		name: 'files to ZIP',
+		short: 'any files → one .zip',
+		description:
+			'bundle any files you drop into a single ZIP archive, packed client-side with fflate. no upload, no size limit games.',
+		category: 'docs',
+		accept: ['*'],
+		acceptAttr: '',
+		multiple: true,
+		minFiles: 2,
+		options: [],
+		run: async (f, o, p) => (await import('./convert/zip')).filesToZip(f, o, p)
+	},
+	{
+		slug: 'html-to-markdown',
+		name: 'HTML to Markdown',
+		short: 'web pages → clean .md',
+		description:
+			'convert any HTML file to clean Markdown right in your browser. handy for pulling saved web pages or CMS exports into a notes app.',
+		category: 'docs',
+		accept: ['.html', '.htm'],
+		acceptAttr: '.html,.htm,text/html',
+		multiple: true,
+		options: [],
+		run: async (f, o, p) => (await import('./convert/html')).htmlToMarkdown(f, o, p)
+	},
+	{
+		slug: 'csv-to-json',
+		name: 'CSV to JSON',
+		short: 'spreadsheets → structured data',
+		description:
+			'convert CSV rows into an array of JSON objects, keyed by the header row. handles quoted fields and commas inside values correctly.',
+		category: 'docs',
+		accept: ['.csv'],
+		acceptAttr: '.csv,text/csv',
+		multiple: true,
+		options: [],
+		run: async (f, o, p) => (await import('./convert/data')).csvToJson(f, o, p)
+	},
+	{
+		slug: 'json-to-csv',
+		name: 'JSON to CSV',
+		short: 'structured data → spreadsheets',
+		description:
+			'convert a JSON array of objects (or arrays) into a CSV file, with the column set built from every key seen. no schema needed up front.',
+		category: 'docs',
+		accept: ['.json'],
+		acceptAttr: '.json,application/json',
+		multiple: true,
+		options: [],
+		run: async (f, o, p) => (await import('./convert/data')).jsonToCsv(f, o, p)
 	}
 ];
 
@@ -610,33 +665,41 @@ export const categories: { id: Category; name: string; blurb: string }[] = [
 	{ id: 'docs', name: 'docs, data & archives', blurb: 'the "why does this need special software" pile. mammoth, SheetJS and libarchive, all local.' }
 ];
 
+/** one accent color per category, reused everywhere: dots, card stripes, badges */
+export const categoryColors: Record<Category, string> = {
+	image: '#7a8450',
+	media: '#c98a3e',
+	pdf: '#a34a32',
+	'3d': '#8c6239',
+	docs: '#5f7a6b'
+};
+
+/** matching solid badge class per category, see .badge-* in app.css */
+export const categoryBadge: Record<Category, string> = {
+	image: 'badge-moss',
+	media: 'badge-amber',
+	pdf: 'badge-terracotta',
+	'3d': 'badge-clay',
+	docs: 'badge-teal'
+};
+
 export function toolBySlug(slug: string): ToolDef | undefined {
 	return tools.find((t) => t.slug === slug);
 }
 
-/** Best-guess tool for files dropped on the landing page. */
-export function detectTool(files: File[]): ToolDef | undefined {
-	const exts = files.map((f) => (/\.([^.]+)$/.exec(f.name)?.[1] ?? '').toLowerCase());
-	const all = (...ok: string[]) => exts.every((e) => ok.includes(e));
-	if (all('pdf')) return toolBySlug(files.length > 1 ? 'merge-pdf' : 'split-pdf');
-	if (all('heic', 'heif')) return toolBySlug('heic-to-jpg');
-	if (all('webp')) return toolBySlug('webp-to-png');
-	if (all('svg')) return toolBySlug('svg-optimizer');
-	if (all('png')) return toolBySlug('png-to-webp');
-	if (all('jpg', 'jpeg')) return toolBySlug('jpg-to-webp');
-	if (all('tif', 'tiff')) return toolBySlug('tiff-to-png');
-	if (all('gif', 'bmp', 'avif')) return toolBySlug('image-converter');
-	if (all('fbx')) return toolBySlug('fbx-to-glb');
-	if (all('obj')) return toolBySlug('obj-to-glb');
-	if (all('stl')) return toolBySlug('stl-to-glb');
-	if (all('glb', 'gltf')) return toolBySlug('model-to-stl');
-	if (all('rar', '7z', 'tar', 'gz', 'tgz', 'bz2', 'xz', 'zip')) return toolBySlug('extract-archive');
-	if (all('docx')) return toolBySlug('docx-to-html');
-	if (all('xlsx', 'xlsm', 'xls')) return toolBySlug('xlsx-to-csv');
-	if (all('srt', 'vtt')) return toolBySlug('subtitle-convert');
-	if (all('flac', 'ogg', 'opus', 'm4a', 'aac', 'aiff', 'wma')) return toolBySlug('audio-converter');
-	if (all('mov')) return toolBySlug('mov-to-mp4');
-	if (all('mp4', 'webm', 'mkv', 'm4v', 'avi', 'mov')) return toolBySlug('mp4-to-mp3');
-	if (all('jpg', 'jpeg', 'png', 'webp', 'heic', 'heif')) return toolBySlug('images-to-pdf');
-	return undefined;
+/**
+ * Every tool that can accept exactly this batch of dropped files: same
+ * extension(s) accepted, and respecting each tool's single/multiple-file and
+ * minimum-file-count constraints. Used to show "here's everything this file
+ * can become" on the landing page instead of guessing a single destination.
+ */
+export function matchingTools(files: File[]): ToolDef[] {
+	if (files.length === 0) return [];
+	const exts = files.map((f) => `.${(/\.([^.]+)$/.exec(f.name)?.[1] ?? '').toLowerCase()}`);
+	return tools.filter((t) => {
+		if (!t.multiple && files.length > 1) return false;
+		if (t.minFiles && files.length < t.minFiles) return false;
+		if (t.accept.includes('*')) return true;
+		return exts.every((e) => t.accept.includes(e));
+	});
 }

@@ -225,8 +225,85 @@ try {
 	console.error('[fixtures] glb generation failed:', e.message);
 }
 
+// Trivial fixture with an extension no tool accepts, for the landing page's
+// "unrecognized file type" fallback test.
+writeFileSync(join(out, 'sample.exe'), Buffer.from([0x4d, 0x5a, 0x90, 0x00]));
+
+// ---------- CSV / JSON / HTML (plain text, no deps) ----------
+writeFileSync(
+	join(out, 'sample.csv'),
+	'name,age,city\n"Smith, John",34,"New York"\nJane,29,Boston\n'
+);
+writeFileSync(
+	join(out, 'sample.json'),
+	JSON.stringify(
+		[
+			{ name: 'Smith, John', age: 34, city: 'New York' },
+			{ name: 'Jane', age: 29, city: 'Boston' }
+		],
+		null,
+		2
+	)
+);
+writeFileSync(
+	join(out, 'sample.html'),
+	'<html><body><h1>Title</h1><p>Some <b>bold</b> text and a <a href="https://example.com">link</a>.</p><ul><li>one</li><li>two</li></ul></body></html>'
+);
+
+// ---------- Multiple plain files, for the "files to ZIP" tool ----------
+writeFileSync(join(out, 'zip-src-a.txt'), 'file one contents\n');
+writeFileSync(join(out, 'zip-src-b.txt'), 'file two contents\n');
+
+// ---------- JPEG with real embedded EXIF (GPS + camera), via Pillow + piexif ----------
+try {
+	const pyExif = `
+from PIL import Image
+import piexif
+
+img = Image.new('RGB', (8, 8), (200, 80, 40))
+img.save(r'${join(out, '_exif_base.jpg')}', quality=90)
+
+def dms(deg):
+    d = int(deg)
+    m = int((deg - d) * 60)
+    s = int(((deg - d) * 60 - m) * 60 * 100)
+    return [(d, 1), (m, 1), (s, 100)]
+
+exif_dict = {
+    "0th": {
+        piexif.ImageIFD.Make: "TestCam Inc.",
+        piexif.ImageIFD.Model: "Pixel Test 9",
+        piexif.ImageIFD.Software: "AlkahestTestSuite 1.0",
+    },
+    "Exif": {
+        piexif.ExifIFD.DateTimeOriginal: "2026:03:15 14:22:10",
+        piexif.ExifIFD.LensModel: "Test Wide 24mm",
+    },
+    "GPS": {
+        piexif.GPSIFD.GPSLatitudeRef: 'N',
+        piexif.GPSIFD.GPSLatitude: dms(40.7484),
+        piexif.GPSIFD.GPSLongitudeRef: 'W',
+        piexif.GPSIFD.GPSLongitude: dms(73.9857),
+    },
+    "1st": {},
+    "thumbnail": None,
+}
+piexif.insert(piexif.dump(exif_dict), r'${join(out, '_exif_base.jpg')}', r'${join(out, 'sample-with-gps.jpg')}')
+`;
+	sh(`python3 -c "${pyExif.replace(/"/g, '\\"')}"`);
+} catch (e) {
+	console.error('[fixtures] EXIF jpeg generation failed (needs piexif — pip install piexif):', e.message);
+} finally {
+	try {
+		(await import('node:fs')).unlinkSync(join(out, '_exif_base.jpg'));
+	} catch {
+		/* fine if it was never created */
+	}
+}
+
 const made = [
 	'sample.svg',
+	'sample.exe',
 	'doc-a.pdf',
 	'doc-b.pdf',
 	'sample.png',
@@ -244,7 +321,13 @@ const made = [
 	'sample.zip',
 	'sample.obj',
 	'sample.stl',
-	'sample.glb'
+	'sample.glb',
+	'sample.csv',
+	'sample.json',
+	'sample.html',
+	'zip-src-a.txt',
+	'zip-src-b.txt',
+	'sample-with-gps.jpg'
 ];
 console.log('[fixtures] present:', made.filter((f) => existsSync(join(out, f))).join(', '));
 console.log('[fixtures] missing:', made.filter((f) => !existsSync(join(out, f))).join(', ') || 'none');
