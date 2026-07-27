@@ -19,7 +19,7 @@
 
 	let files: File[] = $state([]);
 	let opts: Record<string, string | number> = $state({});
-	let phase: 'idle' | 'working' | 'done' | 'error' = $state('idle');
+	let phase = $state<'idle' | 'working' | 'done' | 'error'>('idle');
 	let progress = $state(-1);
 	let progressLabel = $state('');
 	let results: ConvertResult[] = $state([]);

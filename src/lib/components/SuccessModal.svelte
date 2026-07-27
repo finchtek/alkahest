@@ -26,6 +26,21 @@
 	} = $props();
 
 	const saved = $derived(totalIn > 0 && totalOut < totalIn ? 1 - totalOut / totalIn : 0);
+
+	const cheekyMessages = [
+		'no ads, no paywalls, no tracking. ever. if this saved you time or money, consider donating to our ko-fi to keep the cauldron bubbling.',
+		'if this saved you time, money, or a headache, consider tossing a coin to our ko-fi!',
+		'saved you from an expensive subscription or a sketchy converter site? consider supporting us on ko-fi!',
+		'100% free and on-device. if this saved you time or money today, consider buying us a coffee on ko-fi!'
+	];
+
+	let messageIndex = $state(0);
+
+	$effect(() => {
+		if (open) {
+			messageIndex = Math.floor(Math.random() * cheekyMessages.length);
+		}
+	});
 </script>
 
 <svelte:window
@@ -91,8 +106,7 @@
 
 			<div class="mt-5 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-center">
 				<p class="text-sm text-zinc-300">
-					no ads, no paywalls, no tracking. ever. if this saved you a trip to some sketchy
-					converter site, toss a lil coin to keep the cauldron bubbling.
+					{cheekyMessages[messageIndex]}
 				</p>
 				<a
 					href={SITE.tipUrl}

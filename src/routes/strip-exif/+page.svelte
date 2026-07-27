@@ -238,6 +238,17 @@
 					{/if}
 					<button class="btn-secondary !px-3 !py-1.5 text-sm" onclick={resetAll}>scrub more photos</button>
 				</div>
+				<div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-[#7a8450]/20 pt-3 text-xs text-zinc-700">
+					<span>if this saved you time or money, consider donating to our ko-fi!</span>
+					<a
+						href={SITE.tipUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex items-center gap-1 font-semibold text-[#a34a32] hover:underline"
+					>
+						{SITE.tipLabel} ↗
+					</a>
+				</div>
 			</div>
 		{/if}
 	{/if}

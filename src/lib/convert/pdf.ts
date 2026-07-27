@@ -6,11 +6,7 @@ async function getPdfLib() {
 }
 
 export async function getPdfJs() {
-	// The legacy build supports a wider browser range (the modern build relies
-	// on brand-new JS features like Map.getOrInsertComputed).
-	// @ts-expect-error deep import without type declarations
 	const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
-	// @ts-expect-error Vite ?url asset import
 	const worker = (await import('pdfjs-dist/legacy/build/pdf.worker.min.mjs?url')).default;
 	pdfjs.GlobalWorkerOptions.workerSrc = worker;
 	return pdfjs;

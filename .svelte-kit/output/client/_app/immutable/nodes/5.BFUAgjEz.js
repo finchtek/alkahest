@@ -1,0 +1,21 @@
+import{B as e,I as t,J as n,M as r,N as i,Q as a,R as o,S as s,Z as c,a as l,b as u,l as d,p as f,q as p,y as m,z as h}from"../chunks/ClBOwOom.js";import"../chunks/xihTtKlq.js";import"../chunks/BOrQ4Er-.js";import{t as g}from"../chunks/BAQPtfRD.js";var _=s(`<meta name="description"/> <link rel="canonical"/>`,1),v=s(`<section class="mx-auto max-w-3xl px-4 py-12 sm:px-6"><h1 class="text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">terms &amp; privacy</h1> <div class="spectrum-gradient mt-4 h-1 w-20 rounded-full opacity-80"></div> <p class="mt-5 leading-relaxed text-zinc-700"> <a href="/open-source" class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2 hover:text-[#8c3d28]">source &amp; licenses</a>.</p> <h2 class="mt-10 text-xl font-bold text-zinc-900">privacy policy</h2> <p class="mt-3 leading-relaxed text-zinc-700"> </p> <p class="mt-3 leading-relaxed text-zinc-700">concretely, this site does not use cookies, does not run any analytics or tracking script, does
+		not have a login or account system, and does not collect, store, or sell any personal data,
+		because it has no mechanism to do any of those things. the only network requests this page
+		makes are to fetch the site itself and the conversion engines (WASM files), all served from this
+		same domain and cached by your browser — you can verify this yourself any time in your
+		browser's network tab.</p> <p class="mt-3 leading-relaxed text-zinc-700"> </p> <h2 class="mt-10 text-xl font-bold text-zinc-900">terms of service</h2> <p class="mt-3 leading-relaxed text-zinc-700"> </p> <p class="mt-3 leading-relaxed text-zinc-700"> </p> <p class="mt-3 leading-relaxed text-zinc-700">these terms may be updated from time to time; the date at the top of this page reflects the
+		most recent revision. continued use of the site after a change means you accept the updated
+		terms.</p> <h2 class="mt-10 text-xl font-bold text-zinc-900">questions</h2> <p class="mt-3 leading-relaxed text-zinc-700">reach out via the <a target="_blank" rel="noopener noreferrer" class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2 hover:text-[#8c3d28]">tip jar / contact link</a> if anything here needs clarifying.</p></section>`);function y(s,y){n(y,!1),l();var b=v();f(`1l7r4q6`,n=>{var a=_(),o=h(a),s=e(o,2);i(()=>{d(o,`content`,`${g.name??``}'s terms of service and privacy policy: what happens (and doesn't happen) to your files, and the legal basics of using the site.`),d(s,`href`,`${g.origin??``}/legal`)}),r(()=>{t.title=`terms & privacy | ${g.name??``}`}),u(n,a)});var x=e(o(b),4),S=o(x);c(2),a(x);var C=e(x,4),w=o(C);a(C);var T=e(C,4),E=o(T);a(T);var D=e(T,4),O=o(D);a(D);var k=e(D,2),A=o(k);a(k);var j=e(k,6),M=e(o(j));c(),a(j),a(b),i(()=>{m(S,`last updated 2026-07-23. this covers using ${g.name??``} as a visitor. if you're looking for the
+		license that governs the source code itself, that's a separate thing — see `),m(w,`${g.name??``} doesn't have a backend. every conversion runs in your browser, on your device,
+		using WebAssembly. the files you drop are read into your browser's own memory and never
+		leave it — they are never uploaded, transmitted, or seen by us, because there is no server on
+		the other end to send them to.`),m(E,`the hosting provider serving these static files may log basic, standard web-server
+		information (like IP address and request timestamps) the way any web host does. that logging
+		happens at the infrastructure level, is not something ${g.name??``} configures or accesses, and is
+		unrelated to your files or what you convert.`),m(O,`${g.name??``} is provided free, as-is, with no warranty of any kind, express or implied. that
+		means no guarantee of uninterrupted availability, no guarantee that every conversion will be
+		perfect or lossless for every file, and no liability for any damages, data loss, or other harm
+		arising from using (or being unable to use) the site. you're responsible for keeping your own
+		backups of anything you convert.`),m(A,`you agree to use ${g.name??``} only for files you have the legal right to convert, and not to use
+		it for any unlawful purpose. these terms are governed by the laws of the State of Wyoming,
+		without regard to conflict-of-law principles.`),d(M,`href`,g.tipUrl)}),u(s,b),p()}export{y as component};
