@@ -36,6 +36,10 @@ function getWorker() {
 			if (ok) p.resolve(blob);
 			else p.reject(new Error(error));
 		};
+		worker.onerror = (err) => {
+			for (const [, p] of inflight.entries()) p.reject(new Error(err.message || "Worker encoding error"));
+			inflight.clear();
+		};
 	}
 	return worker;
 }

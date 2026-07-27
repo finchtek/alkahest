@@ -29,6 +29,7 @@ function vttToSrt(text: string): string {
 		const ti = lines.findIndex((l) => l.includes('-->'));
 		if (ti < 0) continue;
 		const [rawStart, rest] = lines[ti].split('-->');
+		if (!rest) continue;
 		const rawEnd = rest.trim().split(/\s+/)[0]; // drop cue settings like align:start
 		const body = lines
 			.slice(ti + 1)

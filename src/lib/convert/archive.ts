@@ -33,16 +33,19 @@ export async function extractArchives(
 		progress({ ratio: i / files.length, label: `unsealing ${f.name} (${i + 1}/${files.length})` });
 		const archive = await Archive.open(f);
 		try {
-			if (await archive.hasEncryptedData()) {
-				throw new Error(`${f.name} is password-protected. encrypted archives aren't supported yet.`);
+			try {
+				if (await archive.hasEncryptedData()) {
+					throw new Error(`${f.name} is password-protected. encrypted archives aren't supported yet.`);
+				}
+			} catch (err) {
+				if (err instanceof Error && err.message.includes('password')) throw err;
+				// hasEncryptedData can throw on some formats; carry on and try extraction
 			}
-		} catch (err) {
-			if (err instanceof Error && err.message.includes('password')) throw err;
-			// hasEncryptedData can throw on some formats; carry on and try extraction
+			const tree = (await archive.extractFiles()) as Record<string, unknown>;
+			flatten(tree, '', results, f.name);
+		} finally {
+			await archive.close?.();
 		}
-		const tree = (await archive.extractFiles()) as Record<string, unknown>;
-		flatten(tree, '', results, f.name);
-		await archive.close?.();
 	}
 	if (!results.length) throw new Error('the archive appears to be empty');
 	progress({ ratio: 1 });

@@ -20,7 +20,11 @@ export async function zipResults(results: ConvertResult[]): Promise<Blob> {
 		let name = r.name;
 		let i = 2;
 		while (entries[name]) {
-			name = r.name.replace(/(\.[^.]+)$/, `-${i}$1`);
+			if (/\.[^.]+$/.test(r.name)) {
+				name = r.name.replace(/(\.[^.]+)$/, `-${i}$1`);
+			} else {
+				name = `${r.name}-${i}`;
+			}
 			i++;
 		}
 		entries[name] = new Uint8Array(await r.blob.arrayBuffer());

@@ -164,7 +164,8 @@ async function imagesToPdf(files, _opts, progress) {
 }
 async function rotatePdf(files, opts, progress) {
 	const { PDFDocument, degrees } = await getPdfLib();
-	const by = Number(opts.degrees ?? 90);
+	const degNum = Number(opts.degrees ?? 90);
+	const by = Number.isFinite(degNum) ? degNum : 90;
 	const results = [];
 	for (let i = 0; i < files.length; i++) {
 		const f = files[i];
@@ -189,6 +190,9 @@ async function deletePages(files, opts, progress) {
 	const { PDFDocument } = await getPdfLib();
 	const file = files[0];
 	const src = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
+	try {
+		src.getForm().flatten();
+	} catch {}
 	const total = src.getPageCount();
 	const remove = /* @__PURE__ */ new Set();
 	for (const [start, end] of parseRanges(String(opts.ranges ?? ""), total)) for (let p = start; p <= end; p++) remove.add(p);
@@ -211,7 +215,7 @@ async function deletePages(files, opts, progress) {
 }
 async function watermarkPdf(files, opts, progress) {
 	const { PDFDocument, StandardFonts, rgb, degrees } = await getPdfLib();
-	const text = String(opts.text ?? "DRAFT").slice(0, 60) || "DRAFT";
+	const text = String(opts.text ?? "DRAFT").replace(/[^\x20-\x7E]/g, "").trim().slice(0, 60) || "DRAFT";
 	const results = [];
 	for (let i = 0; i < files.length; i++) {
 		const f = files[i];

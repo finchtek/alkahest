@@ -194,8 +194,10 @@ async function toMp4(files, _opts, progress) {
 }
 async function toGif(files, opts, progress) {
 	const ff = await engine(progress);
-	const fps = Number(opts.fps ?? 12);
-	const width = Number(opts.width ?? 480);
+	const rawFps = Number(opts.fps ?? 12);
+	const fps = Number.isFinite(rawFps) && rawFps > 0 ? Math.min(Math.max(rawFps, 1), 60) : 12;
+	const rawWidth = Number(opts.width ?? 480);
+	const width = Number.isFinite(rawWidth) && rawWidth > 0 ? Math.min(Math.max(rawWidth, 16), 1920) : 480;
 	return eachFile(files, progress, async (f, inName, data, onRatio) => {
 		const vf = `fps=${fps},scale=${width}:-1:flags=lanczos,split[s0][s1];[s0]palettegen=stats_mode=diff[p];[s1][p]paletteuse=dither=bayer:bayer_scale=3`;
 		const blob = await execJob(ff, {

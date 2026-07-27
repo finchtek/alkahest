@@ -28,12 +28,15 @@ async function extractArchives(files, _opts, progress) {
 		});
 		const archive = await Archive.open(f);
 		try {
-			if (await archive.hasEncryptedData()) throw new Error(`${f.name} is password-protected. encrypted archives aren't supported yet.`);
-		} catch (err) {
-			if (err instanceof Error && err.message.includes("password")) throw err;
+			try {
+				if (await archive.hasEncryptedData()) throw new Error(`${f.name} is password-protected. encrypted archives aren't supported yet.`);
+			} catch (err) {
+				if (err instanceof Error && err.message.includes("password")) throw err;
+			}
+			flatten(await archive.extractFiles(), "", results, f.name);
+		} finally {
+			await archive.close?.();
 		}
-		flatten(await archive.extractFiles(), "", results, f.name);
-		await archive.close?.();
 	}
 	if (!results.length) throw new Error("the archive appears to be empty");
 	progress({ ratio: 1 });

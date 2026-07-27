@@ -16,6 +16,7 @@ function vttToSrt(text) {
 		const ti = lines.findIndex((l) => l.includes("-->"));
 		if (ti < 0) continue;
 		const [rawStart, rest] = lines[ti].split("-->");
+		if (!rest) continue;
 		const rawEnd = rest.trim().split(/\s+/)[0];
 		const body = lines.slice(ti + 1).join("\n").replace(/<\/?[cv][^>]*>/g, "");
 		cues.push(`${cues.length + 1}\n${vttTimeToSrt(rawStart)} --> ${vttTimeToSrt(rawEnd)}\n${body}`);
