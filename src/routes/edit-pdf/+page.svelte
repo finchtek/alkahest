@@ -284,16 +284,16 @@
 			<p class="mt-3 text-sm text-red-700">{exportError}</p>
 		{/if}
 		{#if done}
-			<div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-[#a34a32]/20 bg-[#a34a32]/[0.05] p-3.5 text-xs text-zinc-700">
+			<div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-[#a34a32]/20 bg-[#a34a32]/[0.05] p-3.5 text-xs text-zinc-900">
 				<div>
-					<p class="font-semibold text-emerald-700">downloaded. close the tab and nothing is kept anywhere.</p>
-					<p class="mt-0.5 text-zinc-600">if this saved you time or money, consider donating to our ko-fi!</p>
+					<p class="font-bold text-emerald-800">downloaded. close the tab and nothing is kept anywhere.</p>
+					<p class="mt-0.5 font-medium text-zinc-900">if this saved you time or money, consider donating to our ko-fi!</p>
 				</div>
 				<a
 					href={SITE.tipUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="shrink-0 rounded-lg border border-[#a34a32]/40 bg-[#a34a32]/10 px-3.5 py-1.5 font-semibold text-[#a34a32] hover:bg-[#a34a32]/20 transition"
+					class="shrink-0 rounded-lg border border-[#a34a32]/40 bg-[#a34a32]/10 px-3.5 py-1.5 font-bold text-[#a34a32] hover:bg-[#a34a32]/20 transition"
 				>
 					{SITE.tipLabel} ↗
 				</a>

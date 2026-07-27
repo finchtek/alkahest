@@ -148,7 +148,7 @@ function _page($$renderer, $$props) {
 					$$renderer.push("<!--[-1-->");
 					$$renderer.push(`<button class="btn-primary !px-3 !py-1.5 text-sm">download ${escape_html(results[0].name)}</button>`);
 				}
-				$$renderer.push(`<!--]--> <button class="btn-secondary !px-3 !py-1.5 text-sm">scrub more photos</button></div> <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-[#7a8450]/20 pt-3 text-xs text-zinc-700"><span>if this saved you time or money, consider donating to our ko-fi!</span> <a${attr("href", SITE.tipUrl)} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-semibold text-[#a34a32] hover:underline">${escape_html(SITE.tipLabel)} ↗</a></div></div>`);
+				$$renderer.push(`<!--]--> <button class="btn-secondary !px-3 !py-1.5 text-sm">scrub more photos</button></div> <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-[#7a8450]/20 pt-3 text-xs text-zinc-900 font-medium"><span>if this saved you time or money, consider donating to our ko-fi!</span> <a${attr("href", SITE.tipUrl)} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-bold text-[#a34a32] hover:underline">${escape_html(SITE.tipLabel)} ↗</a></div></div>`);
 			}
 			$$renderer.push(`<!--]-->`);
 		}

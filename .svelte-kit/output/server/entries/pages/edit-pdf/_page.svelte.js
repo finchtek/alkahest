@@ -123,7 +123,7 @@ function _page($$renderer, $$props) {
 			$$renderer.push(`<!--]--> `);
 			if (done) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-[#a34a32]/20 bg-[#a34a32]/[0.05] p-3.5 text-xs text-zinc-700"><div><p class="font-semibold text-emerald-700">downloaded. close the tab and nothing is kept anywhere.</p> <p class="mt-0.5 text-zinc-600">if this saved you time or money, consider donating to our ko-fi!</p></div> <a${attr("href", SITE.tipUrl)} target="_blank" rel="noopener noreferrer" class="shrink-0 rounded-lg border border-[#a34a32]/40 bg-[#a34a32]/10 px-3.5 py-1.5 font-semibold text-[#a34a32] hover:bg-[#a34a32]/20 transition">${escape_html(SITE.tipLabel)} ↗</a></div>`);
+				$$renderer.push(`<div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-[#a34a32]/20 bg-[#a34a32]/[0.05] p-3.5 text-xs text-zinc-900"><div><p class="font-bold text-emerald-800">downloaded. close the tab and nothing is kept anywhere.</p> <p class="mt-0.5 font-medium text-zinc-900">if this saved you time or money, consider donating to our ko-fi!</p></div> <a${attr("href", SITE.tipUrl)} target="_blank" rel="noopener noreferrer" class="shrink-0 rounded-lg border border-[#a34a32]/40 bg-[#a34a32]/10 px-3.5 py-1.5 font-bold text-[#a34a32] hover:bg-[#a34a32]/20 transition">${escape_html(SITE.tipLabel)} ↗</a></div>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]-->`);
 		}
