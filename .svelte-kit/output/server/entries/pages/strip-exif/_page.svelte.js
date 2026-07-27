@@ -2,6 +2,7 @@ import { a as head, b as attr, i as ensure_array_like, r as derived, s as string
 import { t as SITE } from "../../../chunks/site.js";
 import { t as Dropzone } from "../../../chunks/Dropzone.js";
 import { n as formatBytes } from "../../../chunks/util.js";
+import { n as zipResults, r as SuccessModal, t as saveBlob } from "../../../chunks/download.js";
 //#region src/routes/strip-exif/+page.svelte
 function _page($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {
@@ -9,9 +10,13 @@ function _page($$renderer, $$props) {
 		let stripping = false;
 		let results = [];
 		let stripError = "";
+		let modalOpen = false;
+		let elapsedMs = 0;
 		let nextId = 0;
 		const anyMetadata = derived(() => entries.some((e) => e.finding?.hasMetadata));
 		const anyGps = derived(() => entries.some((e) => e.finding?.gps));
+		const totalIn = derived(() => entries.reduce((s, e) => s + e.file.size, 0));
+		const totalOut = derived(() => results.reduce((s, r) => s + r.blob.size, 0));
 		function patchEntry(id, patch) {
 			entries = entries.map((e) => e.id === id ? {
 				...e,
@@ -21,6 +26,7 @@ function _page($$renderer, $$props) {
 		async function loadFiles(files) {
 			results = [];
 			stripError = "";
+			modalOpen = false;
 			const images = files.filter((f) => /^image\//.test(f.type) || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name));
 			for (const file of images) {
 				const id = nextId++;
@@ -39,6 +45,20 @@ function _page($$renderer, $$props) {
 					finding: await readExifFindings(file)
 				});
 			}
+		}
+		function resetAll() {
+			entries.forEach((e) => URL.revokeObjectURL(e.thumb));
+			entries = [];
+			results = [];
+			stripError = "";
+			modalOpen = false;
+		}
+		function download(r) {
+			saveBlob(r.name, r.blob);
+		}
+		async function downloadAll() {
+			if (results.length === 1) return download(results[0]);
+			saveBlob("scrubbed-photos.zip", await zipResults(results));
 		}
 		function mapUrl(lat, lon) {
 			return `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=15/${lat}/${lon}`;
@@ -128,31 +148,26 @@ function _page($$renderer, $$props) {
 				} else $$renderer.push("<!--[-1-->");
 				$$renderer.push(`<!--]--></div></div></div>`);
 			}
-			$$renderer.push(`<!--]--></div> `);
-			if (!results.length) {
+			$$renderer.push(`<!--]--></div> <div class="mt-6 flex flex-wrap items-center gap-3"><button class="btn-primary"${attr("disabled", stripping, true)}>${escape_html(`strip metadata from ${entries.length} photo${entries.length === 1 ? "" : "s"}`)}</button></div> `);
+			if (stripError) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<div class="mt-6 flex flex-wrap items-center gap-3"><button class="btn-primary"${attr("disabled", stripping, true)}>${escape_html(`strip metadata from ${entries.length} photo${entries.length === 1 ? "" : "s"}`)}</button></div> `);
-				if (stripError) {
-					$$renderer.push("<!--[0-->");
-					$$renderer.push(`<p class="mt-3 text-sm text-red-700">${escape_html(stripError)}</p>`);
-				} else $$renderer.push("<!--[-1-->");
-				$$renderer.push(`<!--]-->`);
-			} else {
-				$$renderer.push("<!--[-1-->");
-				$$renderer.push(`<div class="card mt-6 border-[#7a8450]/30 bg-[#7a8450]/[0.06] p-4"><p class="font-semibold text-[#5c6b3f]">scrubbed. ${escape_html(results.length)} clean file${escape_html(results.length === 1 ? "" : "s")} ready.</p> <p class="mt-1 text-sm text-zinc-700">GPS, camera info and timestamps are gone. nothing was uploaded to check any of this —
-					every byte stayed on your device.</p> <div class="mt-3 flex flex-wrap gap-2">`);
-				if (results.length > 1) {
-					$$renderer.push("<!--[0-->");
-					$$renderer.push(`<button class="btn-primary !px-3 !py-1.5 text-sm">download all (.zip)</button>`);
-				} else {
-					$$renderer.push("<!--[-1-->");
-					$$renderer.push(`<button class="btn-primary !px-3 !py-1.5 text-sm">download ${escape_html(results[0].name)}</button>`);
-				}
-				$$renderer.push(`<!--]--> <button class="btn-secondary !px-3 !py-1.5 text-sm">scrub more photos</button></div> <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-[#7a8450]/20 pt-3 text-xs text-zinc-900 font-medium"><span>if this saved you time or money, consider donating to our ko-fi!</span> <a${attr("href", SITE.tipUrl)} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-bold text-[#a34a32] hover:underline">${escape_html(SITE.tipLabel)} ↗</a></div></div>`);
-			}
+				$$renderer.push(`<p class="mt-3 text-sm font-medium text-red-600">${escape_html(stripError)}</p>`);
+			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]-->`);
 		}
-		$$renderer.push(`<!--]--></section>`);
+		$$renderer.push(`<!--]--></section> `);
+		SuccessModal($$renderer, {
+			open: modalOpen,
+			results,
+			elapsedMs,
+			totalIn: totalIn(),
+			totalOut: totalOut(),
+			onclose: () => modalOpen = false,
+			onreset: resetAll,
+			ondownload: download,
+			ondownloadall: downloadAll
+		});
+		$$renderer.push(`<!---->`);
 	});
 }
 //#endregion

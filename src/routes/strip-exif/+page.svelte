@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Dropzone from '$lib/components/Dropzone.svelte';
+	import SuccessModal from '$lib/components/SuccessModal.svelte';
 	import { saveBlob, zipResults } from '$lib/download';
 	import { formatBytes } from '$lib/util';
 	import { SITE } from '$lib/site';
@@ -19,10 +20,14 @@
 	let stripping = $state(false);
 	let results: ConvertResult[] = $state([]);
 	let stripError = $state('');
+	let modalOpen = $state(false);
+	let elapsedMs = $state(0);
 	let nextId = 0;
 
 	const anyMetadata = $derived(entries.some((e) => e.finding?.hasMetadata));
 	const anyGps = $derived(entries.some((e) => e.finding?.gps));
+	const totalIn = $derived(entries.reduce((s, e) => s + e.file.size, 0));
+	const totalOut = $derived(results.reduce((s, r) => s + r.blob.size, 0));
 
 	function patchEntry(id: number, patch: Partial<Entry>) {
 		entries = entries.map((e) => (e.id === id ? { ...e, ...patch } : e));
@@ -31,6 +36,7 @@
 	async function loadFiles(files: File[]) {
 		results = [];
 		stripError = '';
+		modalOpen = false;
 		const images = files.filter((f) => /^image\//.test(f.type) || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name));
 		for (const file of images) {
 			const id = nextId++;
@@ -52,15 +58,19 @@
 		entries = [];
 		results = [];
 		stripError = '';
+		modalOpen = false;
 	}
 
 	async function stripAll() {
 		if (!entries.length) return;
 		stripping = true;
 		stripError = '';
+		const t0 = performance.now();
 		try {
 			const { stripMetadata } = await import('$lib/convert/exif');
 			results = await stripMetadata(entries.map((e) => e.file), {}, () => {});
+			elapsedMs = performance.now() - t0;
+			modalOpen = true;
 		} catch (err) {
 			stripError = err instanceof Error ? err.message : String(err);
 		} finally {
@@ -208,48 +218,25 @@
 			{/each}
 		</div>
 
-		{#if !results.length}
-			<div class="mt-6 flex flex-wrap items-center gap-3">
-				<button class="btn-primary" onclick={stripAll} disabled={stripping}>
-					{stripping ? 'scrubbing…' : `strip metadata from ${entries.length} photo${entries.length === 1 ? '' : 's'}`}
-				</button>
-			</div>
-			{#if stripError}
-				<p class="mt-3 text-sm text-red-700">{stripError}</p>
-			{/if}
-		{:else}
-			<div class="card mt-6 border-[#7a8450]/30 bg-[#7a8450]/[0.06] p-4">
-				<p class="font-semibold text-[#5c6b3f]">
-					scrubbed. {results.length} clean file{results.length === 1 ? '' : 's'} ready.
-				</p>
-				<p class="mt-1 text-sm text-zinc-700">
-					GPS, camera info and timestamps are gone. nothing was uploaded to check any of this —
-					every byte stayed on your device.
-				</p>
-				<div class="mt-3 flex flex-wrap gap-2">
-					{#if results.length > 1}
-						<button class="btn-primary !px-3 !py-1.5 text-sm" onclick={downloadAll}>
-							download all (.zip)
-						</button>
-					{:else}
-						<button class="btn-primary !px-3 !py-1.5 text-sm" onclick={() => download(results[0])}>
-							download {results[0].name}
-						</button>
-					{/if}
-					<button class="btn-secondary !px-3 !py-1.5 text-sm" onclick={resetAll}>scrub more photos</button>
-				</div>
-				<div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-[#7a8450]/20 pt-3 text-xs text-zinc-900 font-medium">
-					<span>if this saved you time or money, consider donating to our ko-fi!</span>
-					<a
-						href={SITE.tipUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="inline-flex items-center gap-1 font-bold text-[#a34a32] hover:underline"
-					>
-						{SITE.tipLabel} ↗
-					</a>
-				</div>
-			</div>
+		<div class="mt-6 flex flex-wrap items-center gap-3">
+			<button class="btn-primary" onclick={stripAll} disabled={stripping}>
+				{stripping ? 'scrubbing…' : `strip metadata from ${entries.length} photo${entries.length === 1 ? '' : 's'}`}
+			</button>
+		</div>
+		{#if stripError}
+			<p class="mt-3 text-sm font-medium text-red-600">{stripError}</p>
 		{/if}
 	{/if}
 </section>
+
+<SuccessModal
+	open={modalOpen}
+	{results}
+	{elapsedMs}
+	{totalIn}
+	{totalOut}
+	onclose={() => (modalOpen = false)}
+	onreset={resetAll}
+	ondownload={download}
+	ondownloadall={downloadAll}
+/>

@@ -1,7 +1,8 @@
-import { a as head, b as attr, i as ensure_array_like, n as attr_style, s as stringify, x as escape_html } from "../../../chunks/server.js";
+import { a as head, b as attr, i as ensure_array_like, n as attr_style, r as derived, s as stringify, x as escape_html } from "../../../chunks/server.js";
 import { t as SITE } from "../../../chunks/site.js";
 import { t as Dropzone } from "../../../chunks/Dropzone.js";
 import { n as formatBytes } from "../../../chunks/util.js";
+import { r as SuccessModal, t as saveBlob } from "../../../chunks/download.js";
 //#region src/routes/edit-pdf/+page.svelte
 function _page($$renderer, $$props) {
 	$$renderer.component(($$renderer) => {
@@ -10,8 +11,13 @@ function _page($$renderer, $$props) {
 		let pages = [];
 		let loading = false;
 		let loadError = "";
-		let done = false;
+		let exportError = "";
+		let modalOpen = false;
+		let results = [];
+		let elapsedMs = 0;
 		let seq = 0;
+		const totalIn = derived(() => srcBytes?.byteLength ?? 0);
+		const totalOut = derived(() => results.reduce((s, r) => s + r.blob.size, 0));
 		function nextKey() {
 			seq += 1;
 			return `p${seq}`;
@@ -21,7 +27,8 @@ function _page($$renderer, $$props) {
 			if (!f) return;
 			loading = true;
 			loadError = "";
-			done = false;
+			modalOpen = false;
+			results = [];
 			pages = [];
 			try {
 				srcBytes = await f.arrayBuffer();
@@ -62,6 +69,21 @@ function _page($$renderer, $$props) {
 			} finally {
 				loading = false;
 			}
+		}
+		function resetAll() {
+			srcFile = null;
+			srcBytes = null;
+			pages = [];
+			loadError = "";
+			exportError = "";
+			results = [];
+			modalOpen = false;
+		}
+		function download(r) {
+			saveBlob(r.name, r.blob);
+		}
+		function downloadAll() {
+			if (results.length > 0) download(results[0]);
 		}
 		head("u5kyw", $$renderer, ($$renderer) => {
 			$$renderer.title(($$renderer) => {
@@ -118,15 +140,25 @@ function _page($$renderer, $$props) {
 				$$renderer.push(`<span class="text-xs font-medium text-zinc-600">original: ${escape_html(formatBytes(srcBytes.byteLength))}</span>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--></div> `);
-			$$renderer.push("<!--[-1-->");
-			$$renderer.push(`<!--]--> `);
-			if (done) {
+			if (exportError) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-[#a34a32]/20 bg-[#a34a32]/[0.05] p-3.5 text-xs text-zinc-900"><div><p class="font-bold text-emerald-800">downloaded. close the tab and nothing is kept anywhere.</p> <p class="mt-0.5 font-medium text-zinc-900">if this saved you time or money, consider donating to our ko-fi!</p></div> <a${attr("href", SITE.tipUrl)} target="_blank" rel="noopener noreferrer" class="shrink-0 rounded-lg border border-[#a34a32]/40 bg-[#a34a32]/10 px-3.5 py-1.5 font-bold text-[#a34a32] hover:bg-[#a34a32]/20 transition">${escape_html(SITE.tipLabel)} ↗</a></div>`);
+				$$renderer.push(`<p class="mt-3 text-sm font-medium text-red-600">${escape_html(exportError)}</p>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]-->`);
 		}
-		$$renderer.push(`<!--]--></section>`);
+		$$renderer.push(`<!--]--></section> `);
+		SuccessModal($$renderer, {
+			open: modalOpen,
+			results,
+			elapsedMs,
+			totalIn: totalIn(),
+			totalOut: totalOut(),
+			onclose: () => modalOpen = false,
+			onreset: resetAll,
+			ondownload: download,
+			ondownloadall: downloadAll
+		});
+		$$renderer.push(`<!---->`);
 	});
 }
 //#endregion

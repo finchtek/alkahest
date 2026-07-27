@@ -1,8 +1,10 @@
 <script lang="ts">
 	import Dropzone from '$lib/components/Dropzone.svelte';
+	import SuccessModal from '$lib/components/SuccessModal.svelte';
 	import { saveBlob } from '$lib/download';
 	import { formatBytes } from '$lib/util';
 	import { SITE } from '$lib/site';
+	import type { ConvertResult } from '$lib/types';
 
 	type PageEntry = {
 		key: string;
@@ -14,15 +16,20 @@
 		height: number;
 	};
 
-	let srcFile: File | null = $state(null);
-	let srcBytes: ArrayBuffer | null = $state(null);
+	let srcFile = $state<File | null>(null);
+	let srcBytes = $state<ArrayBuffer | null>(null);
 	let pages: PageEntry[] = $state([]);
 	let loading = $state(false);
 	let loadError = $state('');
 	let exporting = $state(false);
 	let exportError = $state('');
-	let done = $state(false);
+	let modalOpen = $state(false);
+	let results: ConvertResult[] = $state([]);
+	let elapsedMs = $state(0);
 	let seq = 0;
+
+	const totalIn = $derived(srcBytes?.byteLength ?? 0);
+	const totalOut = $derived(results.reduce((s, r) => s + r.blob.size, 0));
 
 	function nextKey(): string {
 		seq += 1;
@@ -34,7 +41,8 @@
 		if (!f) return;
 		loading = true;
 		loadError = '';
-		done = false;
+		modalOpen = false;
+		results = [];
 		pages = [];
 		try {
 			srcBytes = await f.arrayBuffer();
@@ -112,14 +120,23 @@
 		pages = [];
 		loadError = '';
 		exportError = '';
-		done = false;
+		results = [];
+		modalOpen = false;
+	}
+
+	function download(r: ConvertResult) {
+		saveBlob(r.name, r.blob);
+	}
+
+	function downloadAll() {
+		if (results.length > 0) download(results[0]);
 	}
 
 	async function exportPdf() {
 		if (!srcBytes || !pages.length) return;
 		exporting = true;
 		exportError = '';
-		done = false;
+		const t0 = performance.now();
 		try {
 			const { PDFDocument, degrees } = await import('pdf-lib');
 			const src = await PDFDocument.load(srcBytes.slice(0), { ignoreEncryption: true });
@@ -149,8 +166,10 @@
 			}
 			const bytes = await out.save();
 			const name = (srcFile?.name ?? 'document.pdf').replace(/\.pdf$/i, '') + '-edited.pdf';
-			saveBlob(name, new Blob([bytes as unknown as BlobPart], { type: 'application/pdf' }));
-			done = true;
+			const blob = new Blob([bytes as unknown as BlobPart], { type: 'application/pdf' });
+			elapsedMs = performance.now() - t0;
+			results = [{ name, blob }];
+			modalOpen = true;
 		} catch (err) {
 			exportError = err instanceof Error ? err.message : String(err);
 		} finally {
@@ -293,21 +312,17 @@
 		{#if exportError}
 			<p class="mt-3 text-sm font-medium text-red-600">{exportError}</p>
 		{/if}
-		{#if done}
-			<div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-[#a34a32]/20 bg-[#a34a32]/[0.05] p-3.5 text-xs text-zinc-900">
-				<div>
-					<p class="font-bold text-emerald-800">downloaded. close the tab and nothing is kept anywhere.</p>
-					<p class="mt-0.5 font-medium text-zinc-900">if this saved you time or money, consider donating to our ko-fi!</p>
-				</div>
-				<a
-					href={SITE.tipUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="shrink-0 rounded-lg border border-[#a34a32]/40 bg-[#a34a32]/10 px-3.5 py-1.5 font-bold text-[#a34a32] hover:bg-[#a34a32]/20 transition"
-				>
-					{SITE.tipLabel} ↗
-				</a>
-			</div>
-		{/if}
 	{/if}
 </section>
+
+<SuccessModal
+	open={modalOpen}
+	{results}
+	{elapsedMs}
+	{totalIn}
+	{totalOut}
+	onclose={() => (modalOpen = false)}
+	onreset={resetAll}
+	ondownload={download}
+	ondownloadall={downloadAll}
+/>
