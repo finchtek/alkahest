@@ -22,6 +22,11 @@ export async function mergePdfs(
 	for (let i = 0; i < files.length; i++) {
 		progress({ ratio: i / files.length, label: `Adding ${files[i].name} (${i + 1}/${files.length})` });
 		const src = await PDFDocument.load(await files[i].arrayBuffer(), { ignoreEncryption: true });
+		try {
+			src.getForm().flatten();
+		} catch {
+			// ignore if document has no form or fields
+		}
 		const pages = await out.copyPages(src, src.getPageIndices());
 		for (const p of pages) out.addPage(p);
 	}
@@ -68,6 +73,11 @@ export async function splitPdf(
 	const { PDFDocument } = await getPdfLib();
 	const file = files[0];
 	const src = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
+	try {
+		src.getForm().flatten();
+	} catch {
+		// ignore if document has no form or fields
+	}
 	const ranges = parseRanges(String(opts.ranges ?? ''), src.getPageCount());
 	const base = file.name.replace(/\.pdf$/i, '');
 	const results: ConvertResult[] = [];

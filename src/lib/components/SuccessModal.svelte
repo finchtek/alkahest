@@ -82,7 +82,7 @@
 				</button>
 			</div>
 
-			<p class="mt-3 text-sm leading-relaxed text-zinc-200">
+			<p class="mt-3 text-sm leading-relaxed text-zinc-300">
 				processed right on your device: {results.length}
 				{results.length === 1 ? 'file' : 'files'}, {formatBytes(totalOut)}{saved > 0.01
 					? ` (${Math.round(saved * 100)}% smaller)`
@@ -104,15 +104,15 @@
 				<button class="btn-secondary" onclick={onreset}>transmute more files</button>
 			</div>
 
-			<div class="mt-5 rounded-xl border border-white/15 bg-white/[0.06] p-4 text-center">
-				<p class="text-sm font-medium leading-relaxed text-amber-100">
+			<div class="mt-5 rounded-xl border border-zinc-700 bg-zinc-800/90 p-4 text-center">
+				<p class="text-sm font-medium leading-relaxed text-zinc-100">
 					{cheekyMessages[messageIndex]}
 				</p>
 				<a
 					href={SITE.tipUrl}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="mt-3 inline-flex items-center gap-2 rounded-xl border border-amber-500/50 bg-amber-500/15 px-4 py-2 text-sm font-bold text-amber-200 transition hover:bg-amber-500/25 hover:text-white"
+					class="mt-3 inline-flex items-center gap-2 rounded-xl bg-[#a34a32] px-4 py-2 text-sm font-bold text-white shadow-md transition hover:bg-[#8c3d28]"
 				>
 					<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 						<path d="M12 21s-7.5-4.7-10-9.3C.4 8.6 2.2 5 5.7 5c2 0 3.4 1.1 4.3 2.4h4c.9-1.3 2.3-2.4 4.3-2.4 3.5 0 5.3 3.6 3.7 6.7C19.5 16.3 12 21 12 21Z" />

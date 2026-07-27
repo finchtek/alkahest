@@ -123,6 +123,11 @@
 		try {
 			const { PDFDocument, degrees } = await import('pdf-lib');
 			const src = await PDFDocument.load(srcBytes.slice(0), { ignoreEncryption: true });
+			try {
+				src.getForm().flatten();
+			} catch {
+				// ignore if document has no form or fields
+			}
 			const out = await PDFDocument.create();
 			const existingIdx = pages
 				.map((p, i) => ({ p, i }))

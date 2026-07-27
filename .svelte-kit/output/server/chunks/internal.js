@@ -724,7 +724,7 @@ var options = {
 		app: ({ head, body, assets, nonce, env }) => "<!doctype html>\n<!-- brewed with pride. the potion knows. 🏳️‍⚧️ -->\n<html lang=\"en\" class=\"dark\">\n	<head>\n		<meta charset=\"utf-8\" />\n		<link rel=\"icon\" href=\"" + assets + "/favicon.svg\" type=\"image/svg+xml\" />\n		<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n		<meta name=\"theme-color\" content=\"#0f0c09\" />\n		" + head + "\n	</head>\n	<body data-sveltekit-preload-data=\"hover\" class=\"bg-zinc-950 text-zinc-200 antialiased\">\n		<div style=\"display: contents\">" + body + "</div>\n	</body>\n</html>\n",
 		error: error_template_default
 	},
-	version_hash: "nzfxy3"
+	version_hash: "1ql2d6i"
 };
 async function get_hooks() {
 	let handle;

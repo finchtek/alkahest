@@ -18,6 +18,9 @@ async function mergePdfs(files, _opts, progress) {
 			label: `Adding ${files[i].name} (${i + 1}/${files.length})`
 		});
 		const src = await PDFDocument.load(await files[i].arrayBuffer(), { ignoreEncryption: true });
+		try {
+			src.getForm().flatten();
+		} catch {}
 		const pages = await out.copyPages(src, src.getPageIndices());
 		for (const p of pages) out.addPage(p);
 	}
@@ -57,6 +60,9 @@ async function splitPdf(files, opts, progress) {
 	const { PDFDocument } = await getPdfLib();
 	const file = files[0];
 	const src = await PDFDocument.load(await file.arrayBuffer(), { ignoreEncryption: true });
+	try {
+		src.getForm().flatten();
+	} catch {}
 	const ranges = parseRanges(String(opts.ranges ?? ""), src.getPageCount());
 	const base = file.name.replace(/\.pdf$/i, "");
 	const results = [];
