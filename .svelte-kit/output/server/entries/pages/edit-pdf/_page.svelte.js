@@ -67,56 +67,55 @@ function _page($$renderer, $$props) {
 			$$renderer.title(($$renderer) => {
 				$$renderer.push(`<title>edit PDF. reorder, rotate, delete pages | ${escape_html(SITE.name)}</title>`);
 			});
-			$$renderer.push(`<meta name="description" content="reorder, rotate, delete and insert PDF pages right in your browser. no uploads, no Acrobat subscription."/>`);
+			$$renderer.push(`<meta name="description" content="reorder, rotate, delete and insert PDF pages right in your browser. zero uploads, zero tracking."/>`);
 		});
-		$$renderer.push(`<section class="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14"><nav class="text-sm" aria-label="Breadcrumb"><a href="/#tools" class="text-zinc-600 transition hover:text-[#a34a32]">← all tools</a></nav> <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">edit PDF</h1> <p class="mt-3 leading-relaxed text-zinc-700">reorder pages, rotate the sideways ones, delete what you don't need and drop in a blank page
-		where you do. free, and it never leaves your device. this is the one for when windows makes
-		you hunt for a real PDF editor and every option wants a subscription.</p> `);
+		$$renderer.push(`<section class="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14"><nav class="text-sm" aria-label="Breadcrumb"><a href="/#tools" class="text-zinc-600 transition hover:text-[#a34a32]">← all tools</a></nav> <span class="badge badge-terracotta mt-3 inline-flex">full editor</span> <h1 class="mt-2 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">edit PDF</h1> <p class="mt-3 max-w-2xl leading-relaxed text-zinc-700">reorder pages, rotate sideways ones, delete unnecessary pages, and insert blank pages.
+		100% on your device, private and free.</p> `);
 		if (!srcFile) {
 			$$renderer.push("<!--[0-->");
 			$$renderer.push(`<div class="mt-6">`);
 			Dropzone($$renderer, {
 				accept: ".pdf,application/pdf",
 				multiple: false,
-				hint: "drop a single PDF to start editing its pages",
+				hint: "drop a PDF to start editing its pages",
 				onfiles: loadFile
 			});
 			$$renderer.push(`<!----> `);
 			if (loading) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<p class="mt-3 text-center text-sm text-zinc-700">reading pages…</p>`);
+				$$renderer.push(`<p class="mt-3 text-center text-sm font-medium text-zinc-700">reading pages…</p>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--> `);
 			if (loadError) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<p class="mt-3 text-center text-sm text-red-700">${escape_html(loadError)}</p>`);
+				$$renderer.push(`<p class="mt-3 text-center text-sm font-medium text-red-600">${escape_html(loadError)}</p>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--></div>`);
 		} else {
 			$$renderer.push("<!--[-1-->");
-			$$renderer.push(`<div class="card mt-6 flex flex-wrap items-center justify-between gap-3 p-4"><div class="min-w-0"><p class="truncate text-sm font-medium text-zinc-800">${escape_html(srcFile.name)}</p> <p class="text-xs text-zinc-600">${escape_html(pages.length)} page${escape_html(pages.length === 1 ? "" : "s")}</p></div> <div class="flex flex-wrap gap-2"><button class="btn-secondary !px-3 !py-1.5 text-sm">+ blank page</button> <button class="btn-secondary !px-3 !py-1.5 text-sm">start over</button></div></div> <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4"><!--[-->`);
+			$$renderer.push(`<div class="card mt-6 flex flex-wrap items-center justify-between gap-3 p-4"><div class="min-w-0"><p class="truncate text-sm font-bold text-zinc-900">${escape_html(srcFile.name)}</p> <p class="text-xs font-medium text-zinc-600">${escape_html(pages.length)} page${escape_html(pages.length === 1 ? "" : "s")}</p></div> <div class="flex flex-wrap gap-2"><button class="btn-secondary !px-3 !py-1.5 text-xs font-bold">+ blank page</button> <button class="btn-secondary !px-3 !py-1.5 text-xs font-bold">change PDF</button></div></div> <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"><!--[-->`);
 			const each_array = ensure_array_like(pages);
 			for (let i = 0, $$length = each_array.length; i < $$length; i++) {
 				let p = each_array[i];
-				$$renderer.push(`<div class="card flex flex-col gap-2 p-2.5"><div class="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-lg bg-zinc-200/40">`);
+				$$renderer.push(`<div class="card group relative flex flex-col gap-2 p-3 transition hover:border-[#a34a32]/50 hover:shadow-xs"><div class="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-lg border border-zinc-200/80 bg-zinc-100 p-1.5">`);
 				if (p.kind === "existing" && p.thumb) {
 					$$renderer.push("<!--[0-->");
-					$$renderer.push(`<img${attr("src", p.thumb)}${attr("alt", `page ${stringify(i + 1)}`)} class="max-h-full max-w-full transition-transform"${attr_style(`transform: rotate(${stringify(p.rotation)}deg)`)}/>`);
+					$$renderer.push(`<img${attr("src", p.thumb)}${attr("alt", `page ${stringify(i + 1)}`)} class="max-h-full max-w-full rounded shadow-xs transition-transform"${attr_style(`transform: rotate(${stringify(p.rotation)}deg)`)}/>`);
 				} else {
 					$$renderer.push("<!--[-1-->");
-					$$renderer.push(`<div class="flex h-[70%] w-[55%] items-center justify-center rounded border border-dashed border-zinc-400/50 bg-zinc-100/60 text-[10px] text-zinc-600 transition-transform"${attr_style(`transform: rotate(${stringify(p.rotation)}deg)`)}>blank</div>`);
+					$$renderer.push(`<div class="flex h-[75%] w-[60%] items-center justify-center rounded border-2 border-dashed border-zinc-300 bg-white text-xs font-bold text-zinc-500 transition-transform"${attr_style(`transform: rotate(${stringify(p.rotation)}deg)`)}>blank</div>`);
 				}
-				$$renderer.push(`<!--]--> <span class="absolute left-1.5 top-1.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-zinc-800">${escape_html(i + 1)}</span></div> <div class="flex items-center justify-between gap-1"><button class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800 disabled:opacity-30"${attr("disabled", i === 0, true)}${attr("aria-label", `move page ${stringify(i + 1)} earlier`)}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button> <button class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800"${attr("aria-label", `rotate page ${stringify(i + 1)} left`)}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3.5-7.1M3 4v5h5"></path></svg></button> <button class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800"${attr("aria-label", `rotate page ${stringify(i + 1)} right`)}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3.5-7.1M21 4v5h-5"></path></svg></button> <button class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-red-700"${attr("aria-label", `delete page ${stringify(i + 1)}`)}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button> <button class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800 disabled:opacity-30"${attr("disabled", i === pages.length - 1, true)}${attr("aria-label", `move page ${stringify(i + 1)} later`)}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></button></div></div>`);
+				$$renderer.push(`<!--]--> <span class="absolute top-2 left-2 rounded-full bg-zinc-900/85 px-2 py-0.5 font-mono text-[10px] font-bold text-white shadow-xs backdrop-blur-xs">${escape_html(i + 1)}</span></div> <div class="flex items-center justify-between gap-1 border-t border-zinc-200/60 pt-2 text-zinc-600"><button class="rounded-lg p-1.5 transition hover:bg-zinc-100 hover:text-zinc-900 disabled:opacity-25 disabled:hover:bg-transparent"${attr("disabled", i === 0, true)}${attr("aria-label", `move page ${stringify(i + 1)} earlier`)} title="Move page earlier"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button> <button class="rounded-lg p-1.5 transition hover:bg-zinc-100 hover:text-zinc-900"${attr("aria-label", `rotate page ${stringify(i + 1)} left`)} title="Rotate -90°"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3.5-7.1M3 4v5h5"></path></svg></button> <button class="rounded-lg p-1.5 transition hover:bg-zinc-100 hover:text-zinc-900"${attr("aria-label", `rotate page ${stringify(i + 1)} right`)} title="Rotate +90°"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3.5-7.1M21 4v5h-5"></path></svg></button> <button class="rounded-lg p-1.5 text-zinc-500 transition hover:bg-red-50 hover:text-red-600"${attr("aria-label", `delete page ${stringify(i + 1)}`)} title="Delete page"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button> <button class="rounded-lg p-1.5 transition hover:bg-zinc-100 hover:text-zinc-900 disabled:opacity-25 disabled:hover:bg-transparent"${attr("disabled", i === pages.length - 1, true)}${attr("aria-label", `move page ${stringify(i + 1)} later`)} title="Move page later"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></button></div></div>`);
 			}
 			$$renderer.push(`<!--]--></div> `);
 			if (!pages.length) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<p class="mt-6 text-center text-sm text-zinc-600">every page is gone. add a blank one or start over with a fresh file.</p>`);
+				$$renderer.push(`<p class="mt-6 text-center text-sm font-medium text-zinc-600">every page is gone. add a blank one or start over with a fresh file.</p>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--> <div class="mt-6 flex flex-wrap items-center gap-3"><button class="btn-primary"${attr("disabled", !pages.length, true)}>${escape_html("export edited PDF")}</button> `);
 			if (srcBytes) {
 				$$renderer.push("<!--[0-->");
-				$$renderer.push(`<span class="text-xs text-zinc-600">original: ${escape_html(formatBytes(srcBytes.byteLength))}</span>`);
+				$$renderer.push(`<span class="text-xs font-medium text-zinc-600">original: ${escape_html(formatBytes(srcBytes.byteLength))}</span>`);
 			} else $$renderer.push("<!--[-1-->");
 			$$renderer.push(`<!--]--></div> `);
 			$$renderer.push("<!--[-1-->");

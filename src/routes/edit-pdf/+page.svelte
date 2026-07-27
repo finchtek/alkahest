@@ -163,7 +163,7 @@
 	<title>edit PDF. reorder, rotate, delete pages | {SITE.name}</title>
 	<meta
 		name="description"
-		content="reorder, rotate, delete and insert PDF pages right in your browser. no uploads, no Acrobat subscription."
+		content="reorder, rotate, delete and insert PDF pages right in your browser. zero uploads, zero tracking."
 	/>
 </svelte:head>
 
@@ -171,11 +171,11 @@
 	<nav class="text-sm" aria-label="Breadcrumb">
 		<a href="/#tools" class="text-zinc-600 transition hover:text-[#a34a32]">← all tools</a>
 	</nav>
-	<h1 class="mt-3 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">edit PDF</h1>
-	<p class="mt-3 leading-relaxed text-zinc-700">
-		reorder pages, rotate the sideways ones, delete what you don't need and drop in a blank page
-		where you do. free, and it never leaves your device. this is the one for when windows makes
-		you hunt for a real PDF editor and every option wants a subscription.
+	<span class="badge badge-terracotta mt-3 inline-flex">full editor</span>
+	<h1 class="mt-2 text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl">edit PDF</h1>
+	<p class="mt-3 max-w-2xl leading-relaxed text-zinc-700">
+		reorder pages, rotate sideways ones, delete unnecessary pages, and insert blank pages.
+		100% on your device, private and free.
 	</p>
 
 	{#if !srcFile}
@@ -183,86 +183,91 @@
 			<Dropzone
 				accept=".pdf,application/pdf"
 				multiple={false}
-				hint="drop a single PDF to start editing its pages"
+				hint="drop a PDF to start editing its pages"
 				onfiles={loadFile}
 			/>
 			{#if loading}
-				<p class="mt-3 text-center text-sm text-zinc-700">reading pages…</p>
+				<p class="mt-3 text-center text-sm font-medium text-zinc-700">reading pages…</p>
 			{/if}
 			{#if loadError}
-				<p class="mt-3 text-center text-sm text-red-700">{loadError}</p>
+				<p class="mt-3 text-center text-sm font-medium text-red-600">{loadError}</p>
 			{/if}
 		</div>
 	{:else}
 		<div class="card mt-6 flex flex-wrap items-center justify-between gap-3 p-4">
 			<div class="min-w-0">
-				<p class="truncate text-sm font-medium text-zinc-800">{srcFile.name}</p>
-				<p class="text-xs text-zinc-600">{pages.length} page{pages.length === 1 ? '' : 's'}</p>
+				<p class="truncate text-sm font-bold text-zinc-900">{srcFile.name}</p>
+				<p class="text-xs font-medium text-zinc-600">{pages.length} page{pages.length === 1 ? '' : 's'}</p>
 			</div>
 			<div class="flex flex-wrap gap-2">
-				<button class="btn-secondary !px-3 !py-1.5 text-sm" onclick={addBlank}>+ blank page</button>
-				<button class="btn-secondary !px-3 !py-1.5 text-sm" onclick={resetAll}>start over</button>
+				<button class="btn-secondary !px-3 !py-1.5 text-xs font-bold" onclick={addBlank}>+ blank page</button>
+				<button class="btn-secondary !px-3 !py-1.5 text-xs font-bold" onclick={resetAll}>change PDF</button>
 			</div>
 		</div>
 
-		<div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+		<div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
 			{#each pages as p, i (p.key)}
-				<div class="card flex flex-col gap-2 p-2.5">
-					<div class="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-lg bg-zinc-200/40">
+				<div class="card group relative flex flex-col gap-2 p-3 transition hover:border-[#a34a32]/50 hover:shadow-xs">
+					<div class="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-lg border border-zinc-200/80 bg-zinc-100 p-1.5">
 						{#if p.kind === 'existing' && p.thumb}
 							<img
 								src={p.thumb}
 								alt="page {i + 1}"
-								class="max-h-full max-w-full transition-transform"
+								class="max-h-full max-w-full rounded shadow-xs transition-transform"
 								style="transform: rotate({p.rotation}deg)"
 							/>
 						{:else}
 							<div
-								class="flex h-[70%] w-[55%] items-center justify-center rounded border border-dashed border-zinc-400/50 bg-zinc-100/60 text-[10px] text-zinc-600 transition-transform"
+								class="flex h-[75%] w-[60%] items-center justify-center rounded border-2 border-dashed border-zinc-300 bg-white text-xs font-bold text-zinc-500 transition-transform"
 								style="transform: rotate({p.rotation}deg)"
 							>
 								blank
 							</div>
 						{/if}
-						<span class="absolute left-1.5 top-1.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-zinc-800">
+						<span class="absolute top-2 left-2 rounded-full bg-zinc-900/85 px-2 py-0.5 font-mono text-[10px] font-bold text-white shadow-xs backdrop-blur-xs">
 							{i + 1}
 						</span>
 					</div>
-					<div class="flex items-center justify-between gap-1">
+					<div class="flex items-center justify-between gap-1 border-t border-zinc-200/60 pt-2 text-zinc-600">
 						<button
-							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800 disabled:opacity-30"
+							class="rounded-lg p-1.5 transition hover:bg-zinc-100 hover:text-zinc-900 disabled:opacity-25 disabled:hover:bg-transparent"
 							onclick={() => move(i, -1)}
 							disabled={i === 0}
 							aria-label="move page {i + 1} earlier"
+							title="Move page earlier"
 						>
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
 						</button>
 						<button
-							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800"
+							class="rounded-lg p-1.5 transition hover:bg-zinc-100 hover:text-zinc-900"
 							onclick={() => rotate(i, -90)}
 							aria-label="rotate page {i + 1} left"
+							title="Rotate -90°"
 						>
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3.5-7.1M3 4v5h5" /></svg>
 						</button>
 						<button
-							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800"
+							class="rounded-lg p-1.5 transition hover:bg-zinc-100 hover:text-zinc-900"
 							onclick={() => rotate(i, 90)}
 							aria-label="rotate page {i + 1} right"
+							title="Rotate +90°"
 						>
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3.5-7.1M21 4v5h-5" /></svg>
 						</button>
 						<button
-							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-red-700"
+							class="rounded-lg p-1.5 text-zinc-500 transition hover:bg-red-50 hover:text-red-600"
 							onclick={() => remove(i)}
 							aria-label="delete page {i + 1}"
+							title="Delete page"
 						>
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
 						</button>
 						<button
-							class="rounded-lg p-1.5 text-zinc-600 transition hover:bg-zinc-200/60 hover:text-zinc-800 disabled:opacity-30"
+							class="rounded-lg p-1.5 transition hover:bg-zinc-100 hover:text-zinc-900 disabled:opacity-25 disabled:hover:bg-transparent"
 							onclick={() => move(i, 1)}
 							disabled={i === pages.length - 1}
 							aria-label="move page {i + 1} later"
+							title="Move page later"
 						>
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
 						</button>
@@ -272,21 +277,21 @@
 		</div>
 
 		{#if !pages.length}
-			<p class="mt-6 text-center text-sm text-zinc-600">
+			<p class="mt-6 text-center text-sm font-medium text-zinc-600">
 				every page is gone. add a blank one or start over with a fresh file.
 			</p>
 		{/if}
 
 		<div class="mt-6 flex flex-wrap items-center gap-3">
 			<button class="btn-primary" onclick={exportPdf} disabled={exporting || !pages.length}>
-				{exporting ? 'writing PDF…' : 'export edited PDF'}
+				{exporting ? 'exporting PDF…' : 'export edited PDF'}
 			</button>
 			{#if srcBytes}
-				<span class="text-xs text-zinc-600">original: {formatBytes(srcBytes.byteLength)}</span>
+				<span class="text-xs font-medium text-zinc-600">original: {formatBytes(srcBytes.byteLength)}</span>
 			{/if}
 		</div>
 		{#if exportError}
-			<p class="mt-3 text-sm text-red-700">{exportError}</p>
+			<p class="mt-3 text-sm font-medium text-red-600">{exportError}</p>
 		{/if}
 		{#if done}
 			<div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-[#a34a32]/20 bg-[#a34a32]/[0.05] p-3.5 text-xs text-zinc-900">
