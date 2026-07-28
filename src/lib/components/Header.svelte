@@ -4,21 +4,21 @@
 </script>
 
 <header
-	class="sticky top-0 z-40 border-b border-zinc-300/50 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/50"
+	class="sticky top-0 z-40 border-b border-[#d9c7a8] bg-[#f4ede1]/90 backdrop-blur supports-[backdrop-filter]:bg-[#f4ede1]/80"
 >
 	<div class="guild-stripe h-[3px] w-full opacity-90"></div>
 	<div class="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-		<a href="/" class="flex items-center gap-2.5 font-bold tracking-tight text-zinc-900">
+		<a href="/" class="flex items-center gap-2.5 font-bold tracking-tight text-[#3d2f24]">
 			<Logo />
 			<span class="flex flex-col leading-none">
-				<span>{SITE.name}</span>
-				<span class="mt-0.5 text-[10px] font-medium tracking-normal text-zinc-600">{SITE.byline}</span>
+				<span class="font-display text-lg">{SITE.name}</span>
+				<span class="mt-0.5 text-[10px] font-medium tracking-normal text-[#6b5847]">{SITE.byline}</span>
 			</span>
 		</a>
 		<nav class="flex items-center gap-1 text-sm sm:gap-2">
-			<a href="/#tools" class="rounded-lg px-2.5 py-1.5 font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-900">tools</a>
-			<a href="https://finchtek.org/projects.html" rel="external" data-sveltekit-reload class="rounded-lg px-2.5 py-1.5 font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-900">guild suite</a>
-			<a href="https://pulse.finchtek.org" rel="external" data-sveltekit-reload class="rounded-lg px-2.5 py-1.5 font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-900">pulse notary</a>
+			<a href="/#tools" class="rounded-lg px-2.5 py-1.5 font-medium text-[#3d2f24] transition hover:bg-[#e8dcc8]">tools</a>
+			<a href="https://finchtek.org/projects.html" rel="external" data-sveltekit-reload class="rounded-lg px-2.5 py-1.5 font-medium text-[#3d2f24] transition hover:bg-[#e8dcc8]">guild suite</a>
+			<a href="https://pulse.finchtek.org" rel="external" data-sveltekit-reload class="rounded-lg px-2.5 py-1.5 font-medium text-[#3d2f24] transition hover:bg-[#e8dcc8]">pulse notary</a>
 			<a
 				href={SITE.tipUrl}
 				target="_blank"
