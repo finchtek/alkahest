@@ -195,7 +195,7 @@
 										{/if}
 									</div>
 									<button
-										class="mt-1.5 text-xs font-medium text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2"
+										class="mt-1.5 text-xs font-medium text-[#a34a32] hover:text-[#8c3d28]"
 										onclick={() => (entry.expanded = !entry.expanded)}
 									>
 										{entry.expanded ? 'hide' : 'show'} all {Object.keys(entry.finding.raw).length} raw tags

@@ -131,3 +131,8 @@ p, li, label, button, .body-text {
 .btn-secondary {
 	@apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-zinc-300 bg-white px-6 py-2.5 font-semibold text-zinc-900 transition hover:bg-zinc-50 hover:border-zinc-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a34a32];
 }
+
+/* Global link styles - zero underlines anywhere */
+a, a:hover, a:focus, a:active, p a, li a {
+	text-decoration: none !important;
+}

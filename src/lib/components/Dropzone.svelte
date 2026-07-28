@@ -75,7 +75,7 @@
 			{dragging ? 'drop it! (gently)' : 'drop files here'}
 		</p>
 		<p class="mt-1 text-xs text-zinc-700 sm:text-sm">
-			or <span class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2">browse</span> · paste straight from your clipboard
+			or <span class="font-semibold text-[#a34a32]">browse</span> · paste straight from your clipboard
 		</p>
 	</div>
 	{#if hint}

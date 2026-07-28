@@ -49,11 +49,11 @@
 	<div class="card mt-6 border-[#a34a32]/20 bg-[#a34a32]/[0.04] p-6">
 		<h2 class="text-lg font-bold text-zinc-900">Open Source &amp; Code License</h2>
 		<p class="mt-2 text-sm leading-relaxed text-zinc-700">
-			Interested in the source code or third-party open-source libraries (like FFmpeg, pdf-lib, libheif) that power this app? Check out our <a href="/open-source" class="font-semibold text-[#a34a32] underline hover:text-[#8c3d28]">source &amp; licenses page</a>.
+			Interested in the source code or third-party open-source libraries (like FFmpeg, pdf-lib, libheif) that power this app? Check out our <a href="/open-source" class="font-semibold text-[#a34a32] hover:text-[#8c3d28]">source &amp; licenses page</a>.
 		</p>
 	</div>
 
 	<div class="mt-8 text-center text-xs text-zinc-600">
-		questions? reach out via the <a href={SITE.tipUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-[#a34a32] underline hover:text-[#8c3d28]">contact / ko-fi link</a>.
+		questions? reach out via the <a href={SITE.tipUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-[#a34a32] hover:text-[#8c3d28]">contact / ko-fi link</a>.
 	</div>
 </section>
