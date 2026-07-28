@@ -23,7 +23,7 @@
 		if (found.length > 0) {
 			unknownMsg = '';
 		} else {
-			unknownMsg = 'hmm. mixed or unrecognized file types. search or browse below and we\'ll take it from there.';
+			unknownMsg = 'Hmm. Mixed or unrecognized file types. Search or browse below and we\'ll take it from there.';
 		}
 	}
 
@@ -49,22 +49,22 @@
 	const specialTools = [
 		{
 			slug: 'edit-pdf',
-			name: 'edit PDF',
-			short: 'reorder, rotate, delete and insert pages — the full editor',
+			name: 'Edit PDF',
+			short: 'Reorder, rotate, delete and insert pages — the full editor',
 			keywords: 'pdf editor pages reorder rotate delete insert merge',
 			color: '#a34a32',
 			badgeClass: 'badge-terracotta',
-			badgeLabel: 'full editor',
+			badgeLabel: 'Full Editor',
 			icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z M14 2v6h6 M9 13h6 M9 17h4'
 		},
 		{
 			slug: 'strip-exif',
-			name: 'photo metadata viewer & stripper',
-			short: 'see the GPS location & camera info hiding in your photos, then strip it',
+			name: 'Photo Metadata Viewer & Stripper',
+			short: 'See the GPS location & camera info hiding in your photos, then strip it',
 			keywords: 'exif metadata gps location privacy strip photo camera',
 			color: '#7a8450',
 			badgeClass: 'badge-moss',
-			badgeLabel: 'privacy',
+			badgeLabel: 'Privacy',
 			icon: 'M12 2 3 6v6c0 5 4 8 9 10 5-2 9-5 9-10V6Z'
 		}
 	];
@@ -88,35 +88,35 @@
 	);
 
 	const badges = [
-		{ label: '100% on-device', dot: '#c98a3e' },
-		{ label: 'zero uploads', dot: '#7a8450' },
-		{ label: 'no ads, no tracking', dot: '#a34a32' }
+		{ label: '100% On-Device', dot: '#c98a3e' },
+		{ label: 'Zero Uploads', dot: '#7a8450' },
+		{ label: 'No Ads, No Tracking', dot: '#a34a32' }
 	];
 
 	const steps = [
 		{
 			n: '1',
 			color: 'bg-[#7a8450]/15 text-[#7a8450]',
-			title: 'bring a file to the lab',
-			body: 'read straight into your browser\'s memory. no form posts, no uploads. the network tab stays completely silent.'
+			title: 'Bring a File to the Lab',
+			body: 'Read straight into your browser\'s memory. No form posts, no uploads. The network tab stays completely silent.'
 		},
 		{
 			n: '2',
 			color: 'bg-[#c98a3e]/15 text-[#c98a3e]',
-			title: 'the alchemy happens here',
+			title: 'The Alchemy Happens Here',
 			body: 'FFmpeg, libheif, pdf.js and friends: real native libraries compiled to WebAssembly, working their craft in Web Workers.'
 		},
 		{
 			n: '3',
 			color: 'bg-[#a34a32]/15 text-[#a34a32]',
-			title: 'collect your work',
-			body: 'your transmuted file comes back as a download. close the tab and nothing persists anywhere.'
+			title: 'Collect Your Work',
+			body: 'Your transmuted file comes back as a download. Close the tab and nothing persists anywhere.'
 		}
 	];
 </script>
 
 <svelte:head>
-	<title>{SITE.name}. {SITE.tagline} free in-browser file converter</title>
+	<title>{SITE.name}. {SITE.tagline} Free In-Browser File Converter</title>
 	<meta name="description" content={SITE.description} />
 	<link rel="canonical" href={SITE.origin} />
 	<meta property="og:title" content="{SITE.name}. {SITE.tagline}" />
@@ -161,29 +161,29 @@
 
 	<div class="relative mx-auto max-w-6xl px-4 pt-16 pb-10 sm:px-6 sm:pt-20">
 		<div class="mx-auto max-w-3xl text-center">
-			<span class="badge badge-amber shadow-sm" style="margin-bottom: 8px;">alkahest · alpha</span>
+			<span class="badge badge-amber shadow-sm" style="margin-bottom: 8px;">Alkahest · Alpha</span>
 			<h1 style="width: min(100%, 36rem);">
-				transmute your files. <span style="color: #c98a3e; text-shadow: 0 2px 4px rgba(0,0,0,0.9);">zero uploads.</span>
+				Transmute Your Files. <span style="color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.9);">Zero Uploads.</span>
 			</h1>
 			<p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-700 sm:text-lg">
-				40+ conversions — images, video, audio, PDFs, 3D models, docs. every one runs in your
-				browser. nothing you drop here ever leaves your device.
+				40+ conversions — images, video, audio, PDFs, 3D models, docs. Every one runs in your
+				browser. Nothing you drop here ever leaves your device.
 			</p>
 			<div class="guild-stripe mx-auto mt-6 h-1.5 w-28 rounded-full opacity-90"></div>
 		</div>
 
 		<div class="relative mx-auto mt-8 max-w-2xl">
-			<Dropzone accept="" multiple={true} hint="any supported file. we'll show you everything it can become" {onfiles} />
+			<Dropzone accept="" multiple={true} hint="Any supported file. We'll show you everything it can become" {onfiles} />
 			{#if unknownMsg}
 				<p class="mt-3 text-center text-sm text-[#c98a3e]">{unknownMsg}</p>
 			{/if}
 			{#if matches.length > 0}
 				<div class="card mt-4 p-4 text-left">
 					<p class="text-xs font-medium tracking-wide text-zinc-600 uppercase">
-						detected: {detectedLabel(droppedFiles)}
+						Detected: {detectedLabel(droppedFiles)}
 					</p>
 					<p class="mt-1 text-sm text-zinc-700">
-						here's everything {SITE.name} can turn {droppedFiles.length === 1 ? 'it' : 'them'} into:
+						Here's everything {SITE.name} can turn {droppedFiles.length === 1 ? 'it' : 'them'} into:
 					</p>
 					<div class="mt-3 grid gap-2 sm:grid-cols-2">
 						{#each matches as m (m.slug)}
@@ -223,7 +223,7 @@
 			<input
 				type="text"
 				bind:value={query}
-				placeholder="search 40+ tools… try &ldquo;heic&rdquo; or &ldquo;merge&rdquo;"
+				placeholder="Search 40+ tools… Try &ldquo;HEIC&rdquo; or &ldquo;merge&rdquo;"
 				class="w-full rounded-full border border-zinc-400/40 bg-white/70 py-2.5 pr-4 pl-10 text-sm text-zinc-900 placeholder:text-zinc-500 focus:border-[#a34a32]/60 focus:outline-none"
 			/>
 		</div>
@@ -277,7 +277,7 @@
 				</div>
 			{:else}
 				<p class="mt-6 text-center text-sm text-zinc-600">
-					nothing matches "{query}" — try a format name like PDF, MP4, or HEIC.
+					Nothing matches "{query}" — try a format name like PDF, MP4, or HEIC.
 				</p>
 			{/if}
 		</div>
@@ -322,10 +322,10 @@
 													<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z M14 2v6h6 M9 13h6 M9 17h4" />
 												</svg>
 											</span>
-											<span class="text-sm font-semibold text-zinc-900 group-hover:text-[#a34a32]">edit PDF</span>
-											<span class="badge badge-terracotta">full editor</span>
+											<span class="text-sm font-semibold text-zinc-900 group-hover:text-[#a34a32]">Edit PDF</span>
+											<span class="badge badge-terracotta">Full Editor</span>
 										</div>
-										<p class="text-xs leading-snug text-zinc-600">reorder, rotate, delete and insert pages</p>
+										<p class="text-xs leading-snug text-zinc-600">Reorder, rotate, delete and insert pages</p>
 									</a>
 								{/if}
 								{#if cat.id === 'image'}
@@ -340,10 +340,10 @@
 													<path d="M12 2 3 6v6c0 5 4 8 9 10 5-2 9-5 9-10V6Z" />
 												</svg>
 											</span>
-											<span class="text-sm font-semibold text-zinc-900 group-hover:text-[#7a8450]">photo metadata viewer &amp; stripper</span>
-											<span class="badge badge-moss">privacy</span>
+											<span class="text-sm font-semibold text-zinc-900 group-hover:text-[#7a8450]">Photo Metadata Viewer &amp; Stripper</span>
+											<span class="badge badge-moss">Privacy</span>
 										</div>
-										<p class="text-xs leading-snug text-zinc-600">see the GPS location &amp; camera info hiding in your photos, then strip it</p>
+										<p class="text-xs leading-snug text-zinc-600">See the GPS location &amp; camera info hiding in your photos, then strip it</p>
 									</a>
 								{/if}
 								{#each catTools as tool (tool.slug)}
@@ -361,7 +361,7 @@
 <!-- how it works -->
 <section class="border-t border-zinc-300/30 bg-zinc-100/50">
 	<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-		<h2 class="text-center text-2xl font-bold text-zinc-900">how the lab keeps your secrets</h2>
+		<h2 class="text-center text-2xl font-bold text-zinc-900">How the Lab Keeps Your Secrets</h2>
 		<div class="mt-8 grid gap-4 sm:grid-cols-3">
 			{#each steps as step (step.n)}
 				<div class="card p-5">
@@ -375,9 +375,9 @@
 		</div>
 		<div class="card mx-auto mt-8 max-w-3xl border-[#7a8450]/20 bg-[#7a8450]/[0.06] p-5 text-center">
 			<p class="text-sm leading-relaxed text-zinc-800">
-				<span class="font-semibold text-[#7a8450]">don't take our word for it:</span>
-				open your browser's DevTools → network tab and convert something. you'll see zero requests
-				carrying your data. the only downloads are the conversion engines themselves, served from
+				<span class="font-semibold text-[#7a8450]">Don't take our word for it:</span>
+				Open your browser's DevTools → network tab and convert something. You'll see zero requests
+				carrying your data. The only downloads are the conversion engines themselves, served from
 				this site.
 			</p>
 		</div>

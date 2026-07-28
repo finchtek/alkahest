@@ -158,6 +158,11 @@ h1, h2 {
   text-shadow: 0 2px 2px rgba(61, 47, 36, 0.8);
 }
 
+h1 span, h2 span, .display span {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+}
+
 /* UnifrakturCook is a display face , cap paragraph/body text from ever inheriting it */
 p, li, blockquote, figcaption, label, input, textarea, button, .body-text {
   font-family: var(--font-body);
