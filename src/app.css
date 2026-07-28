@@ -293,7 +293,7 @@ section {
   content: "FinchTek";
   font-size: 1.7rem;
 }
-.alkahest-logo::after {
+.alkahest-logo::after, .pulse-logo::after {
   content: none !important;
   display: none !important;
 }
