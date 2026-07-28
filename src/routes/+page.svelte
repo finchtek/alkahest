@@ -165,7 +165,7 @@
 			<h1 style="width: min(100%, 36rem);">
 				Transmute Your Files. <span style="color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.9);">Zero Uploads.</span>
 			</h1>
-			<p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-700 sm:text-lg">
+			<p class="mx-auto mt-4 max-w-xl text-center text-base leading-relaxed text-zinc-700 sm:text-lg">
 				40+ conversions — images, video, audio, PDFs, 3D models, docs. Every one runs in your
 				browser. Nothing you drop here ever leaves your device.
 			</p>
@@ -364,12 +364,12 @@
 		<h2 class="text-center text-2xl font-bold text-zinc-900">How the Lab Keeps Your Secrets</h2>
 		<div class="mt-8 grid gap-4 sm:grid-cols-3">
 			{#each steps as step (step.n)}
-				<div class="card p-5">
+				<div class="card flex flex-col items-center p-5 text-center">
 					<span class="inline-flex h-8 w-8 items-center justify-center rounded-lg font-mono text-sm font-bold {step.color}">
 						{step.n}
 					</span>
-					<h3 class="mt-3 font-semibold text-zinc-900">{step.title}</h3>
-					<p class="mt-2 text-sm leading-relaxed text-zinc-700">{step.body}</p>
+					<h3 class="mt-3 text-center font-semibold text-zinc-900">{step.title}</h3>
+					<p class="mt-2 text-center text-sm leading-relaxed text-zinc-700">{step.body}</p>
 				</div>
 			{/each}
 		</div>
