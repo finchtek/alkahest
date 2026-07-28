@@ -80,7 +80,7 @@ function _page($$renderer, $$props) {
 		to any server or tracked. this site is a set of static pages: no backend, no database, no
 		analytics script, not a single cookie. the only network traffic after page load is fetching the
 		conversion engines themselves (served from this same site, cached by your browser). you can
-		verify this any time with your browser’s DevTools network tab.</p> <p class="mt-3 leading-relaxed text-zinc-700">the site’s own code is public on <a${attr("href", SITE.github)} target="_blank" rel="noopener noreferrer" class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2 hover:text-[#8c3d28]">GitHub</a> under the <a href="https://polyformproject.org/licenses/shield/1.0.0/" target="_blank" rel="noopener noreferrer" class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2 hover:text-[#8c3d28]">PolyForm Shield license</a>:
+		verify this any time with your browser’s DevTools network tab.</p> <p class="mt-3 leading-relaxed text-zinc-700">the site’s own code is public on <a${attr("href", SITE.github)} target="_blank" rel="noopener noreferrer" class="text-[#a34a32] hover:text-[#8c3d28]">GitHub</a> under the <a href="https://polyformproject.org/licenses/shield/1.0.0/" target="_blank" rel="noopener noreferrer" class="text-[#a34a32] hover:text-[#8c3d28]">PolyForm Shield license</a>:
 		source available, not fully open source. read it, learn from it, self-host your own copy for
 		personal use. the one thing it doesn't let you do is take this code and launch a competing file
 		converter with it. every third-party library below keeps its own, separate, genuinely open-source
@@ -92,20 +92,20 @@ function _page($$renderer, $$props) {
 		}
 		$$renderer.push(`<!--]--></tbody></table></div> <h2 class="mt-10 text-xl font-bold text-zinc-900">a precise note on FFmpeg licensing</h2> <p class="mt-3 leading-relaxed text-zinc-700">FFmpeg is licensed under the LGPL v2.1+, with optional components under the GPL, notably the
 		x264/x265 encoders and libpostproc. the official prebuilt <code class="rounded bg-zinc-200/60 px-1.5 py-0.5 font-mono text-xs">@ffmpeg/core</code> package ships those GPL components, which puts a reciprocal open-source obligation on any app
-		that bundles it. this site doesn't use that package. it ships a <a${attr("href", `${stringify(SITE.github)}/tree/main/vendor/ffmpeg-core-lgpl`)} target="_blank" rel="noopener noreferrer" class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2 hover:text-[#8c3d28]">custom-built core</a> compiled from the same FFmpeg version and the same <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener noreferrer" class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2 hover:text-[#8c3d28]">ffmpeg.wasm build scripts</a>,
+		that bundles it. this site doesn't use that package. it ships a <a${attr("href", `${stringify(SITE.github)}/tree/main/vendor/ffmpeg-core-lgpl`)} target="_blank" rel="noopener noreferrer" class="text-[#a34a32] hover:text-[#8c3d28]">custom-built core</a> compiled from the same FFmpeg version and the same <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener noreferrer" class="text-[#a34a32] hover:text-[#8c3d28]">ffmpeg.wasm build scripts</a>,
 		with <code class="rounded bg-zinc-200/60 px-1.5 py-0.5 font-mono text-xs">--enable-gpl</code>, <code class="rounded bg-zinc-200/60 px-1.5 py-0.5 font-mono text-xs">--enable-libx264</code>, <code class="rounded bg-zinc-200/60 px-1.5 py-0.5 font-mono text-xs">--enable-libx265</code> and
 		libpostproc removed. everything that's left (libvpx, libmp3lame, libtheora, libvorbis, libopus,
 		libwebp, libass/freetype/fribidi, libzimg) is BSD or LGPL licensed. the practical effect: H.264
 		and HEVC video can still be read and remuxed (that's most real-world MOV/MP4 files, and it's
 		lossless besides), but re-encoding brand new H.264 isn't available. when a source file truly
 		needs re-encoding, this site falls back to VP9 instead, which every modern browser plays fine.
-		the build recipe, exact configure flags and source links live in <a${attr("href", `${stringify(SITE.github)}/blob/main/vendor/ffmpeg-core-lgpl/BUILD.md`)} target="_blank" rel="noopener noreferrer" class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2 hover:text-[#8c3d28]">BUILD.md</a> alongside the compiled core, so anyone can verify or reproduce it.</p> <p class="mt-3 leading-relaxed text-zinc-700">This software uses code of FFmpeg licensed under the LGPLv2.1 and its source can be
-		downloaded <a href="https://git.ffmpeg.org/ffmpeg.git" target="_blank" rel="noopener noreferrer" class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2 hover:text-[#8c3d28]">here</a>.
+		the build recipe, exact configure flags and source links live in <a${attr("href", `${stringify(SITE.github)}/blob/main/vendor/ffmpeg-core-lgpl/BUILD.md`)} target="_blank" rel="noopener noreferrer" class="text-[#a34a32] hover:text-[#8c3d28]">BUILD.md</a> alongside the compiled core, so anyone can verify or reproduce it.</p> <p class="mt-3 leading-relaxed text-zinc-700">This software uses code of FFmpeg licensed under the LGPLv2.1 and its source can be
+		downloaded <a href="https://git.ffmpeg.org/ffmpeg.git" target="_blank" rel="noopener noreferrer" class="text-[#a34a32] hover:text-[#8c3d28]">here</a>.
 		FFmpeg is a trademark of Fabrice Bellard, originator of the FFmpeg project.</p> <h2 class="mt-10 text-xl font-bold text-zinc-900">what this site will never do</h2> <p class="mt-3 leading-relaxed text-zinc-700">no downloading or ripping from YouTube or social platforms. only transforming files you
 		already have. no ads, no trackers, no selling anything about you (there is literally nothing to
 		sell. we never see your data). no paywalled “premium” conversions. ever.</p> <h2 class="mt-10 text-xl font-bold text-zinc-900">thank you, seriously</h2> <p class="mt-3 leading-relaxed text-zinc-700">to the maintainers of every project above: this tool is a thin layer of UI over decades of
 		your work. if ${escape_html(SITE.name)} saves people time, that credit is mostly yours. if you’d like to
-		support this site’s development, there’s a <a${attr("href", SITE.tipUrl)} target="_blank" rel="noopener noreferrer" class="text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2 hover:text-[#8c3d28]">tip jar</a>.
+		support this site’s development, there’s a <a${attr("href", SITE.tipUrl)} target="_blank" rel="noopener noreferrer" class="text-[#a34a32] hover:text-[#8c3d28]">tip jar</a>.
 		honestly though, consider supporting the upstream projects too.</p></section>`);
 	});
 }

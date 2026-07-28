@@ -19,8 +19,8 @@
 			</div>
 			<nav class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-2 text-sm" aria-label="Footer">
 				<a href="/#tools" class="text-zinc-700 transition hover:text-zinc-900">all tools</a>
-				<a href="https://finchtek.org" class="text-zinc-700 transition hover:text-zinc-900">finchtek hub</a>
-				<a href="https://pulse.finchtek.org" class="text-zinc-700 transition hover:text-zinc-900">pulse notary</a>
+				<a href="https://finchtek.org" rel="external" data-sveltekit-reload class="text-zinc-700 transition hover:text-zinc-900">finchtek hub</a>
+				<a href="https://pulse.finchtek.org" rel="external" data-sveltekit-reload class="text-zinc-700 transition hover:text-zinc-900">pulse notary</a>
 				<a href="/legal" class="text-zinc-700 transition hover:text-zinc-900">terms &amp; privacy</a>
 			</nav>
 		</div>

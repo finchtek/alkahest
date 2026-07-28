@@ -131,7 +131,7 @@ function _page($$renderer, $$props) {
 							$$renderer.push("<!--[0-->");
 							$$renderer.push(`<span class="badge badge-amber">${escape_html(entry.finding.software)}</span>`);
 						} else $$renderer.push("<!--[-1-->");
-						$$renderer.push(`<!--]--></div> <button class="mt-1.5 text-xs font-medium text-[#a34a32] underline decoration-[#a34a32]/40 underline-offset-2">${escape_html(entry.expanded ? "hide" : "show")} all ${escape_html(Object.keys(entry.finding.raw).length)} raw tags</button> `);
+						$$renderer.push(`<!--]--></div> <button class="mt-1.5 text-xs font-medium text-[#a34a32] hover:text-[#8c3d28]">${escape_html(entry.expanded ? "hide" : "show")} all ${escape_html(Object.keys(entry.finding.raw).length)} raw tags</button> `);
 						if (entry.expanded) {
 							$$renderer.push("<!--[0-->");
 							$$renderer.push(`<div class="mt-2 max-h-48 overflow-y-auto rounded-lg bg-zinc-100/70 p-2.5 font-mono text-[11px] text-zinc-700"><!--[-->`);
