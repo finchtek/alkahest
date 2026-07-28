@@ -124,16 +124,59 @@ p, label, button, .body-text {
 	background: #5f7a6b;
 }
 
-/* terracotta primary button */
-.btn-primary {
-	@apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#a34a32] px-6 py-2.5 font-bold text-white shadow-xs transition duration-200 hover:bg-[#8c3d28] active:translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a34a32] disabled:cursor-not-allowed disabled:opacity-50;
-}
-
-.btn-secondary {
-	@apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d9c7a8] bg-white px-6 py-2.5 font-semibold text-[#3d2f24] transition hover:bg-[#f4ede1] hover:border-[#b89968] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a34a32];
-}
-
 /* Global link styles - zero underlines anywhere */
 a, a:hover, a:focus, a:active, p a, li a {
 	text-decoration: none !important;
 }
+
+/* Kenney Button Styles */
+.btn,
+.btn-primary,
+.btn-secondary,
+button.btn {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.95rem !important;
+  line-height: 1;
+  color: #3d2f24 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  box-sizing: border-box;
+
+  border: none !important;
+  border-image: none !important;
+  background-image: url('/images/kenney/buttonLong_beige.png') !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  transition: transform 0.1s ease, filter 0.1s ease;
+  filter: drop-shadow(0 3px 2px rgba(61, 47, 36, 0.45));
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+  filter: drop-shadow(0 4px 4px rgba(61, 47, 36, 0.55));
+  transform: scale(1.03);
+}
+
+.btn:active,
+.btn-primary:active,
+.btn-secondary:active {
+  background-image: url('/images/kenney/buttonLong_beige_pressed.png') !important;
+  transform: translateY(2px);
+  filter: none;
+}
+
