@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://alkahest.finchtek.org/sitemap.xml

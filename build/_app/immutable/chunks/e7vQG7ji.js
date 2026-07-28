@@ -1,1 +1,0 @@
-var e=``+new URL(`../assets/pdf.worker.min.Dtn11Elq.mjs`,import.meta.url).href;export{e as default};
