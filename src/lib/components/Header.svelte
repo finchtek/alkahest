@@ -16,7 +16,9 @@
 			</span>
 		</a>
 		<nav class="flex items-center gap-1 text-sm sm:gap-2">
-			<a href="/#tools" class="rounded-lg px-3 py-1.5 text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-900">tools</a>
+			<a href="/#tools" class="rounded-lg px-2.5 py-1.5 font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-900">tools</a>
+			<a href="https://finchtek.org/projects.html" class="rounded-lg px-2.5 py-1.5 font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-900">guild suite</a>
+			<a href="https://pulse.finchtek.org" class="rounded-lg px-2.5 py-1.5 font-medium text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-900">pulse notary</a>
 			<a
 				href={SITE.tipUrl}
 				target="_blank"
