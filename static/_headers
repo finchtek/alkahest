@@ -1,6 +1,15 @@
-# Cloudflare Pages headers
+# Cloudflare Pages headers for Alkahest
 
-# The chunked FFmpeg core never changes for a given deploy — cache aggressively.
+# Caching rules
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/images/*
+  Cache-Control: public, max-age=31536000
+
 /vendor/ffmpeg/*
   Cache-Control: public, max-age=31536000, immutable
 
