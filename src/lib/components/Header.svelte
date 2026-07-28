@@ -1,11 +1,12 @@
 <script lang="ts">
+	import Logo from './Logo.svelte';
 </script>
 
 <header class="site-header">
 	<div class="wrap header-inner">
-		<a href="https://finchtek.org/index.html" class="logo">
-			<svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-			<span>FinchTek</span>
+		<a href="https://finchtek.org/index.html" class="logo alkahest-logo">
+			<Logo size={28} />
+			<span class="logo-title">FinchTek Alkahest</span>
 		</a>
 		<nav class="primary-nav" aria-label="Primary">
 			<ul>

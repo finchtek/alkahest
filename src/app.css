@@ -293,6 +293,16 @@ section {
   content: "FinchTek";
   font-size: 1.7rem;
 }
+.alkahest-logo::after {
+  content: none !important;
+  display: none !important;
+}
+.logo-title {
+  font-size: 1.7rem;
+  font-family: var(--font-display);
+  color: var(--color-text-inverse);
+  text-shadow: 0 2px 2px rgba(61, 47, 36, 0.75);
+}
 .logo:hover { opacity: 0.85; transform: translateY(-4px) scale(1.02); text-decoration: none !important; }
 .logo .logo-icon {
   display: block;
@@ -775,10 +785,10 @@ button.btn {
 
 .footer-inner {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-lg);
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
   text-align: center;
 }
 
