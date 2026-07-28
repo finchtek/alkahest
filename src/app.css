@@ -45,33 +45,6 @@
    ========================================================================== */
 
 /* -------------------------------------------------------------------------
-   0. Local Font Definitions
-   ------------------------------------------------------------------------- */
-@font-face {
-  font-family: 'Vollkorn';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/vollkorn-variable.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Almendra';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/pirata-one-400.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'MedievalSharp';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/unifrakturcook-700.woff2') format('woff2');
-}
-
-/* -------------------------------------------------------------------------
    1. Design tokens (CSS custom properties)
    ------------------------------------------------------------------------- */
 :root {
