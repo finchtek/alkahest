@@ -1,140 +1,339 @@
-@import 'tailwindcss';
 @import url('https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400&family=MedievalSharp&family=Vollkorn:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 
-@theme {
-	/* FinchTek Warm Earth & Guild Palette */
-	--color-bg: #f4ede1;
-	--color-bg-alt: #e8dcc8;
-	--color-bg-inverse: #3d2f24;
+/* ==========================================================================
+   FinchTek Organization Hub , Shared Stylesheet
+   Structure-first scaffolding. Not final visual design.
 
-	--color-zinc-50: #faf7f2;
-	--color-zinc-100: #f4ede1;
-	--color-zinc-200: #e8dcc8;
-	--color-zinc-300: #d9c7a8;
-	--color-zinc-400: #b89968;
-	--color-zinc-500: #8c7355;
-	--color-zinc-600: #6b5847;
-	--color-zinc-700: #4a3c30;
-	--color-zinc-800: #3d2f24;
-	--color-zinc-900: #2c2118;
-	--color-zinc-950: #1a130d;
+   INTERIM "PLACEHOLDER MODE" SKIN , this pass swaps the original neutral/
+   serious scaffolding look for something colorful and obviously provisional,
+   per founder request, while the real build stays structure-first. All
+   colors, type, and spacing still live in custom properties below so this
+   whole look can be swapped for real brand values later by editing this one
+   :root block , nothing else needs to change.
+   ========================================================================== */
 
-	/* terracotta primary */
-	--color-accent-50: #fdf3e7;
-	--color-accent-300: #c98a3e;
-	--color-accent-400: #a34a32;
-	--color-accent-500: #a34a32;
-	--color-accent-600: #8c3d28;
+/* ==========================================================================
+   ART ASSET GUIDE , what to drop in later, and at what size.
+   Every colorful striped box on the site is one of these placeholder
+   slots. When real art is ready, swap it in via CSS (set background-image
+   on the same class) or drop an <img> inside the element , sizing is
+   controlled by the classes below either way. Export at 2x display size
+   for retina sharpness.
 
-	/* secondary palette */
-	--color-green-500: #7a8450;
-	--color-amber-500: #c98a3e;
-	--color-brown-500: #8c6239;
-	--color-teal-500: #5f7a6b;
+   - Hero / Community / Alkahest-hero illustrations (.art-placeholder):
+     full-width banners inside their section. Height grows from a 10rem
+     floor , treat that as a minimum, not a fixed target. A wide image
+     (roughly 3:1–4:1) using object-fit: cover reads best here.
 
-	--font-sans: 'Vollkorn', Georgia, 'Times New Roman', serif;
-	--font-display: 'Almendra', 'MedievalSharp', 'Vollkorn', serif;
-	--font-mono:
-		ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+   - Founder photo (.founder-photo-placeholder): circle, 160×160px
+     display, export at 320×320px. Square source, cropped to a circle.
+
+   - Testimonial avatar (.avatar-placeholder): circle, 32×32px display,
+     export at 64×64px.
+
+   - Footer social icons (.social-placeholder): circle, 44×44px display,
+     export at 88×88px.
+
+   - Status badge placeholder (.badge-unknown): small pill, ~56×14px ,
+     more likely to become real text ("Concept" / "Alpha" / etc.) than
+     an image; swap the empty <span> for badge text when the status
+     is decided.
+
+   - Header bar plank/beam graphic (not yet wired into this file): a
+     single continuous beam → export ~2400×80px, set as background-size:
+     cover on .site-header. A repeating plank tile → export one seamless
+     tile at 480×80px (960×160px at 2x), set as background-repeat:
+     repeat-x. Send the file over and I'll wire up whichever you pick.
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   1. Design tokens (CSS custom properties)
+   ------------------------------------------------------------------------- */
+:root {
+  /* Typography: Vollkorn (body/serif), Almendra & MedievalSharp (legible guild display) */
+  --font-body: 'Vollkorn', Georgia, 'Times New Roman', serif;
+  --font-display: 'Almendra', 'MedievalSharp', 'Vollkorn', serif;
+
+  /* Color , PLACEHOLDER MODE palette: earth tones. Still varied enough to
+     read as "colorful, not somber," but warm and grounded instead of
+     bright/candy , terracotta, ochre, moss, clay, sage. Swap these for
+     real brand colors whenever they're ready; everything downstream
+     reads from these variables. */
+  --color-bg: #f4ede1;
+  --color-bg-alt: #e8dcc8;
+  --color-bg-inverse: #3d2f24;
+  --color-text: #3d2f24;
+  --color-text-muted: #6b5847;
+  --color-text-inverse: #f4ede1;
+
+  --color-accent: #a34a32;   /* terracotta, darkened slightly from earlier pass for AA text contrast , primary buttons, links, current-nav underline */
+  --color-accent-2: #7a8450; /* moss green */
+  --color-accent-3: #c98a3e; /* ochre / mustard */
+  --color-accent-4: #8c6239; /* clay brown */
+  --color-accent-5: #5f7a6b; /* muted sage-teal */
+
+  --color-border: #d9c7a8;
+  --color-border-strong: #b89968;
+
+  /* Status badges , kept distinguishable by value, not just hue */
+  --color-badge-live: #7a8450;
+  --color-badge-alpha: #c98a3e;
+  --color-badge-soon: #8c6239;
+  --color-badge-verified: #5f7a6b;
+
+  /* RPG Tier Rarity Colors */
+  --rarity-common:     #F8FAFC; /* Parchment White */
+  --rarity-uncommon:   #10B981; /* Emerald Green */
+  --rarity-rare-bird:  #60A5FA; /* Sky Blue (Early Bird) */
+  --rarity-rare:       #2563EB; /* Cobalt Blue */
+  --rarity-epic:       #8B5CF6; /* Amethyst Purple */
+  --rarity-legendary:  #F97316; /* Amber Orange */
+  --rarity-artifact:   #EAB308; /* Sunburst Gold */
+
+  /* Placeholder fill , the "empty box" treatment used anywhere real content
+     is still pending. One gradient, reused everywhere, easy to swap out. */
+  --placeholder-gradient: repeating-linear-gradient(
+    135deg,
+    var(--color-accent) 0 16px,
+    var(--color-accent-3) 16px 32px,
+    var(--color-accent-2) 32px 48px,
+    var(--color-accent-4) 48px 64px,
+    var(--color-accent-5) 64px 80px
+  );
+
+  /* Spacing scale */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.375rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.85rem;
+  --space-md: 1.25rem;
+  --space-lg: 1.75rem;
+  --space-xl: 2.75rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* Layout */
+  --max-width: 1040px;
+  --max-width-narrow: 700px;
+  --radius: 12px;
+  --radius-pill: 999px;
+  --border-width: 2px;
 }
 
-html {
-	color-scheme: light;
-	scroll-behavior: smooth;
-}
+/* -------------------------------------------------------------------------
+   2. Reset / base
+   ------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
 
-/* Warm Guild Parchment Background */
+html { scroll-behavior: smooth; }
+
 body {
-	background-color: #f4ede1;
-	color: #3d2f24;
-	font-family: var(--font-sans);
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+  text-align: center;
 }
 
-@media (prefers-reduced-motion: reduce) {
-	html {
-		scroll-behavior: auto;
-	}
-	*,
-	*::before,
-	*::after {
-		animation-duration: 0.01ms !important;
-		transition-duration: 0.01ms !important;
-	}
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 auto var(--space-sm) auto;
+  letter-spacing: 0.01em;
+  text-align: center;
 }
 
-::selection {
-	background: rgb(163 74 50 / 0.2);
+h1, h2 {
+  display: block;
+  width: min(100%, 32rem);
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 0.35rem 1rem;
+  border-style: solid;
+  border-width: 18px;
+  border-image: url('/images/Board2.png') 24 fill stretch;
+  color: var(--color-text-inverse);
+  text-align: center;
+  text-shadow: 0 2px 2px rgba(61, 47, 36, 0.8);
 }
 
-/* FinchTek Medieval Display Headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	font-family: var(--font-display);
-	font-weight: 700;
-	line-height: 1.2;
-	color: #3d2f24;
+/* UnifrakturCook is a display face , cap paragraph/body text from ever inheriting it */
+p, li, blockquote, figcaption, label, input, textarea, button, .body-text {
+  font-family: var(--font-body);
 }
 
-p, label, button, .body-text {
-	font-family: var(--font-sans);
+h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); }
+h3 { font-size: 1.25rem; font-family: var(--font-body); font-weight: 700; } /* card/section subheads stay in body face */
+
+p { margin: 0 0 var(--space-sm); }
+
+/* Universal text-decoration wipeout - zero underlines anywhere on the site */
+*, *::before, *::after {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-style: none !important;
+  text-decoration-color: transparent !important;
 }
 
-.card {
-	@apply rounded-xl border border-[#d9c7a8] bg-white transition hover:border-[#b89968] hover:shadow-xs;
+/* Global link styles */
+a, a:hover, a:focus, a:active, a:visited, p a, li a {
+  color: var(--color-accent);
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-color: transparent !important;
 }
 
-/* spectrum hairline: terracotta → amber → moss */
-.spectrum-gradient {
-	background: linear-gradient(90deg, #a34a32, #c98a3e, #7a8450);
+/* Preserve proper button & nav dark wood font color across all states */
+.primary-nav a, 
+.primary-nav a:link,
+.primary-nav a:visited,
+.primary-nav a *, 
+.btn, 
+.btn:link,
+.btn:visited,
+.btn * {
+  color: #3d2f24 !important;
 }
 
-/* guild stripe */
-.guild-stripe {
-	background-image: repeating-linear-gradient(
-		135deg,
-		#a34a32 0 10px,
-		#c98a3e 10px 20px,
-		#7a8450 20px 30px,
-		#8c6239 30px 40px,
-		#5f7a6b 40px 50px
-	);
+img { max-width: 100%; display: block; }
+
+ul, ol { padding-left: 1.25em; }
+
+/* -------------------------------------------------------------------------
+   3. Layout utilities
+   ------------------------------------------------------------------------- */
+.wrap {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
 }
 
-/* solid-color pill badges */
-.badge {
-	@apply inline-flex items-center rounded-full px-2.5 py-0.5 text-[0.65rem] font-bold tracking-wide text-white uppercase;
-}
-.badge-terracotta {
-	background: #a34a32;
-}
-.badge-amber {
-	background: #c98a3e;
-}
-.badge-moss {
-	background: #7a8450;
-}
-.badge-clay {
-	background: #8c6239;
-}
-.badge-teal {
-	background: #5f7a6b;
+.wrap-narrow {
+  max-width: var(--max-width-narrow);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
 }
 
-/* Global link styles - zero underlines anywhere */
-a, a:hover, a:focus, a:active, p a, li a {
-	text-decoration: none !important;
+section {
+  padding-block: var(--space-xl);
 }
 
-/* Kenney Button Styles */
+.section-tight { padding-block: var(--space-md); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+  padding: var(--space-2xs) var(--space-sm);
+  z-index: 100;
+}
+.skip-link:focus {
+  left: var(--space-sm);
+  top: var(--space-sm);
+}
+
+/* -------------------------------------------------------------------------
+   4. Header / primary nav
+   ------------------------------------------------------------------------- */
+.site-header {
+  border: none !important;
+  background-color: var(--color-bg);
+  background-image: url('/images/Board1.png');
+  background-repeat: repeat-x;
+  background-position: center center;
+  background-size: 100% 100%;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(61, 47, 36, 0.4);
+  overflow: visible !important;
+  padding-bottom: 6px;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 0.65rem;
+  min-height: 76px;
+  overflow: visible !important;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0;
+  line-height: 1;
+  color: var(--color-text-inverse);
+  text-shadow: 0 2px 2px rgba(61, 47, 36, 0.75);
+  text-decoration: none !important;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  transform: translateY(-4px);
+}
+.logo::after {
+  content: "FinchTek";
+  font-size: 1.7rem;
+}
+.logo:hover { opacity: 0.85; transform: translateY(-4px) scale(1.02); text-decoration: none !important; }
+.logo .logo-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  stroke: var(--color-text-inverse);
+  filter: drop-shadow(0 2px 2px rgba(61, 47, 36, 0.75));
+  flex-shrink: 0;
+}
+
+.primary-nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  transform: translateY(-6px) !important;
+}
+
+/* -------------------------------------------------------------------------
+   Kenney UI Buttons & Navigation
+   Authentic 9-slice game UI buttons using Kenney RPG assets
+   ------------------------------------------------------------------------- */
+.primary-nav a,
+.primary-nav a.btn,
+.primary-nav li a {
+  padding: 0.5rem 1.1rem !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  font-size: 0.9rem !important;
+  border: none !important;
+  border-image: none !important;
+  background-image: url('/images/kenney/buttonLong_beige.png') !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+}
+
+.primary-nav a,
 .btn,
-.btn-primary,
-.btn-secondary,
+.tool-link,
 button.btn {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.95rem !important;
   line-height: 1;
@@ -165,18 +364,559 @@ button.btn {
   user-select: none;
 }
 
-.btn:hover,
-.btn-primary:hover,
-.btn-secondary:hover {
-  filter: drop-shadow(0 4px 4px rgba(61, 47, 36, 0.55));
-  transform: scale(1.03);
+.btn-full {
+  display: flex !important;
+  width: 100% !important;
+  justify-content: center !important;
+  text-align: center !important;
 }
 
-.btn:active,
-.btn-primary:active,
-.btn-secondary:active {
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-block: var(--space-xs);
+}
+
+.btn-row .btn,
+.btn-row button.btn {
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+
+.btn-icon,
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  stroke: #3d2f24;
+  stroke-width: 2.3;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
+}
+
+.btn:hover,
+.tool-link:hover,
+.primary-nav a:hover {
+  filter: drop-shadow(0 4px 4px rgba(61, 47, 36, 0.55));
+  transform: scale(1.03);
+  text-decoration: none !important;
+}
+
+/* Kenney Current Page State (pressed / inset) */
+.primary-nav a[aria-current="page"],
+.primary-nav a[aria-current="page"]:hover {
+  border: none !important;
+  border-image: none !important;
   background-image: url('/images/kenney/buttonLong_beige_pressed.png') !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  color: #3d2f24 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
   transform: translateY(2px);
   filter: none;
+  text-decoration: none !important;
+}
+
+.primary-nav a[aria-current="page"] .nav-icon,
+.primary-nav a[aria-current="page"]:hover .nav-icon {
+  stroke: #3d2f24;
+  filter: none;
+}
+
+/* Kenney Primary & Secondary CTA */
+.btn-primary,
+.btn-secondary {
+  border: none !important;
+  border-image: none !important;
+  background-image: url('/images/kenney/buttonLong_beige.png') !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  color: #3d2f24 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  text-decoration: none !important;
+}
+
+.btn-primary .btn-icon,
+.btn-secondary .btn-icon {
+  stroke: #3d2f24;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.9));
+}
+
+/* Kenney Tactile 3D Pressed State */
+.primary-nav a:active,
+.primary-nav a[aria-current="page"]:active,
+.btn:active,
+.btn-primary:active,
+.btn-secondary:active,
+.tool-link:active {
+  border: none !important;
+  border-image: none !important;
+  background-image: url('/images/kenney/buttonLong_beige_pressed.png') !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  color: #3d2f24 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  transform: translateY(2px);
+  filter: none;
+  text-decoration: none !important;
+}
+
+.primary-nav a:active .nav-icon,
+.btn:active .btn-icon,
+.tool-link:active .btn-icon {
+  stroke: #3d2f24;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
+  transform: scale(0.95);
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* -------------------------------------------------------------------------
+   5. Placeholder / "empty box" treatment
+   Anywhere real content is still pending, this is the visual language:
+   a colorful diagonal-stripe fill, no explanatory text baked into the
+   page itself (the "what's needed" notes live in HTML comments in the
+   source instead, out of the rendered view). Purely CSS , no imagery.
+   ------------------------------------------------------------------------- */
+.placeholder-fill {
+  background-image: var(--placeholder-gradient);
+  background-color: var(--color-border);
+  opacity: 0.5;
+}
+
+.placeholder-box {
+  display: block;
+  min-height: 3rem;
+  border-radius: var(--radius);
+  margin-block: var(--space-xs);
+}
+
+.placeholder-box-lg { min-height: 6rem; }
+.placeholder-box-sm { min-height: 2rem; }
+
+.placeholder-chip {
+  display: inline-block;
+  width: 4rem;
+  height: 1rem;
+  border-radius: var(--radius-pill);
+  vertical-align: middle;
+}
+
+.placeholder-pill {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  height: 2.5rem;
+  border-radius: var(--radius-pill);
+}
+
+.placeholder-line {
+  display: block;
+  height: 1.1em;
+  width: 55%;
+  border-radius: 6px;
+  margin-block: 0.3em;
+}
+
+.placeholder-line-lg {
+  height: 1.8rem;
+  width: 45%;
+  border-radius: 8px;
+  margin-block: 0.4em;
+}
+
+.placeholder-circle-sm {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+/* Scaffolding / illustration slots - kept compact to prevent huge blank spaces */
+.art-placeholder {
+  background-image: var(--placeholder-gradient);
+  background-color: var(--color-border);
+  border-radius: var(--radius);
+  min-height: 4.5rem;
+  margin-block: var(--space-xs);
+  opacity: 0.45;
+}
+
+/* -------------------------------------------------------------------------
+   6. Buttons
+   ------------------------------------------------------------------------- */
+/* Buttons: sized to a real tap target (44px min-height, per WCAG 2.5.5 /
+   Fitts's Law) and given hover/active/focus feedback so they read as
+   unmistakably clickable , the highest-contrast, most "grabby" elements
+   on the page should be the ones people can act on. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+}
+
+
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+/* -------------------------------------------------------------------------
+   7. Badges
+   ------------------------------------------------------------------------- */
+.badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25em 0.7em;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-inverse);
+  margin-bottom: var(--space-2xs);
+}
+
+.badge-live { background: var(--color-badge-live); }
+.badge-alpha { background: var(--color-badge-alpha); }
+.badge-soon { background: var(--color-badge-soon); }
+.badge-verified { background: var(--color-badge-verified); }
+
+/* Status not decided yet , same colorful placeholder fill as everything
+   else that's pending, sized to sit where badge text would go, no label. */
+.badge-unknown {
+  background-image: var(--placeholder-gradient);
+  background-color: var(--color-border);
+  width: 3.5rem;
+  height: 0.9rem;
+  padding: 0;
+  opacity: 0.6;
+}
+
+/* -------------------------------------------------------------------------
+   8. Tools / project card grid
+   Scalable: auto-fill + minmax, NOT hardcoded column counts. Accepts new
+   cards (2 today, N later) without layout rework.
+   ------------------------------------------------------------------------- */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-md);
+  margin-block: var(--space-md);
+}
+
+.tool-card {
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #fbf7f0;
+  box-shadow: 0 2px 6px rgba(61, 47, 36, 0.04);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.tool-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-border-strong);
+  box-shadow: 0 8px 20px rgba(61, 47, 36, 0.08);
+}
+
+.tool-card h3 { margin-bottom: var(--space-2xs); text-align: center; }
+
+.tool-card p { flex-grow: 1; color: var(--color-text-muted); font-size: 0.95rem; text-align: center; }
+
+.tool-card-more {
+  border-style: dashed;
+  border-color: var(--color-border-strong);
+  color: var(--color-text-muted);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: transparent;
+  box-shadow: none;
+}
+.tool-card-more:hover { transform: none; box-shadow: none; }
+
+.tool-link { font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem; margin-top: var(--space-2xs); margin-inline: auto; text-align: center; }
+
+/* -------------------------------------------------------------------------
+   9. Values grid
+   ------------------------------------------------------------------------- */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-md);
+  margin-block: var(--space-md);
+}
+
+.value {
+  background: #fbf7f0;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  box-shadow: 0 2px 6px rgba(61, 47, 36, 0.03);
+  text-align: center;
+}
+
+.value h3 { margin-bottom: var(--space-2xs); color: var(--color-accent); font-size: 1.15rem; text-align: center; }
+.value p { color: var(--color-text-muted); margin: 0; font-size: 0.95rem; text-align: center; }
+
+/* -------------------------------------------------------------------------
+   10. Testimonials + stat row
+   ------------------------------------------------------------------------- */
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-md);
+  margin-block: var(--space-md);
+}
+
+.testimonial {
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  margin: 0;
+  text-align: center;
+}
+
+.testimonial footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  margin-top: var(--space-sm);
+  font-style: normal;
+  text-align: center;
+}
+
+.avatar-placeholder {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-image: var(--placeholder-gradient);
+  background-color: var(--color-border);
+  display: inline-block;
+  opacity: 0.6;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-md);
+  text-align: center;
+  margin-block: var(--space-md);
+}
+
+.stat-number {
+  display: block;
+  margin-inline: auto;
+  width: 3.5rem;
+  height: 1.8rem;
+  border-radius: var(--radius);
+}
+
+.stat-label {
+  display: block;
+  margin: var(--space-2xs) auto 0;
+  width: 70%;
+  height: 0.8rem;
+  border-radius: var(--radius-pill);
+}
+
+/* -------------------------------------------------------------------------
+   11. Support card
+   ------------------------------------------------------------------------- */
+.support-card {
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  margin-block: var(--space-md);
+  margin-inline: auto;
+  max-width: var(--max-width-narrow);
+  text-align: center;
+}
+
+/* -------------------------------------------------------------------------
+   12. Footer
+   ------------------------------------------------------------------------- */
+.site-footer {
+  border-top: var(--border-width) solid var(--color-border);
+  padding-block: var(--space-lg);
+  margin-top: var(--space-2xl);
+  background: var(--color-bg-alt);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  justify-content: space-between;
+}
+
+.social-links {
+  list-style: none;
+  display: flex;
+  gap: var(--space-sm);
+  padding: 0;
+  margin: 0;
+}
+
+.social-placeholder {
+  display: inline-block;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-image: var(--placeholder-gradient);
+  background-color: var(--color-border);
+  opacity: 0.6;
+}
+
+.copyright {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  margin-top: var(--space-lg);
+  margin-bottom: 0;
+}
+
+/* -------------------------------------------------------------------------
+   13. Founder / about page
+   ------------------------------------------------------------------------- */
+.founder-photo-placeholder {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background-image: var(--placeholder-gradient);
+  background-color: var(--color-border);
+  margin-bottom: var(--space-md);
+  opacity: 0.6;
+}
+
+.role { color: var(--color-text-muted); margin-top: calc(-1 * var(--space-2xs)); }
+
+/* -------------------------------------------------------------------------
+   14. Responsive
+   ------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .header-inner { flex-direction: column; align-items: center; gap: 0.75rem; padding-block: 1rem 1.85rem; min-height: auto; }
+  .primary-nav ul { gap: 0.4rem; flex-wrap: wrap; justify-content: center; padding-bottom: 0.5rem; }
+  section { padding-block: var(--space-xl); }
+}
+
+/* -------------------------------------------------------------------------
+   15. Focus visibility + motion preference
+   Keyboard users track focus the way mouse users track a cursor , a
+   visible ring is the equivalent of a clear visual anchor as attention
+   moves through the page. Respect prefers-reduced-motion so the small
+   hover/press transitions above don't become a vestibular issue.
+   ------------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   16. RPG Tier Icons & Rarity Glows
+   ------------------------------------------------------------------------- */
+.tier-icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin: 0 auto var(--space-xs) auto;
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.tool-card:hover .tier-icon {
+  transform: translateY(-2px) scale(1.05);
+}
+
+.tier-icon.rarity-common     { filter: drop-shadow(0 0 6px rgba(248, 250, 252, 0.4)); }
+.tier-icon.rarity-uncommon   { filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5)); }
+.tier-icon.rarity-rare-bird  { filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.6)); }
+.tier-icon.rarity-rare       { filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.6)); }
+.tier-icon.rarity-epic       { filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.7)); }
+.tier-icon.rarity-legendary  { filter: drop-shadow(0 0 14px rgba(249, 115, 22, 0.8)); }
+.tier-icon.rarity-artifact   { filter: drop-shadow(0 0 16px rgba(234, 179, 8, 0.9)); }
+
+/* -------------------------------------------------------------------------
+   17. Absolute Button & Navigation Underline Wipeout
+   ------------------------------------------------------------------------- */
+a.btn,
+a.btn *,
+a.btn:link,
+a.btn:visited,
+a.btn:hover,
+a.btn:active,
+a.btn:focus,
+.btn,
+.btn *,
+.btn:link,
+.btn:visited,
+.btn:hover,
+.btn:active,
+.btn:focus,
+.primary-nav a,
+.primary-nav a *,
+.primary-nav a:link,
+.primary-nav a:visited,
+.primary-nav a:hover,
+.primary-nav a:active,
+.primary-nav a:focus,
+.tool-link,
+.tool-link *,
+.tool-link:hover,
+.tool-card a,
+.tool-card a * {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-style: none !important;
+  text-decoration-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* -------------------------------------------------------------------------
+   18. View Transitions (Zero-Reload SPA Navigation)
+   ------------------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.18s;
+  animation-timing-function: ease-in-out;
 }
 
