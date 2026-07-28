@@ -161,9 +161,9 @@
 
 	<div class="relative mx-auto max-w-6xl px-4 pt-16 pb-10 sm:px-6 sm:pt-20">
 		<div class="mx-auto max-w-3xl text-center">
-			<span class="badge badge-amber shadow-sm">alkahest · alpha</span>
-			<h1 class="mt-5 text-4xl font-extrabold tracking-tight text-zinc-900 sm:text-6xl">
-				transmute your files. <span class="text-zinc-600">zero uploads.</span>
+			<span class="badge badge-amber shadow-sm" style="margin-bottom: 8px;">alkahest · alpha</span>
+			<h1 style="width: min(100%, 36rem);">
+				transmute your files. <span style="color: #c98a3e; text-shadow: 0 2px 4px rgba(0,0,0,0.9);">zero uploads.</span>
 			</h1>
 			<p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-zinc-700 sm:text-lg">
 				40+ conversions — images, video, audio, PDFs, 3D models, docs. every one runs in your
